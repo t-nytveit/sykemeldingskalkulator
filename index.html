@@ -12,7 +12,7 @@
 
     <style>
         :root {
-            --primary: #18961e; /* KIWI-grønn */
+            --primary: #18961e; 
             --bg: #f4f7f6;
             --card: #ffffff;
             --text-muted: #6c757d;
@@ -44,8 +44,6 @@
             font-size: 16px; box-sizing: border-box; background-color: #fcfcfc;
         }
 
-        input:focus { border-color: var(--primary); outline: none; background-color: #fff; }
-
         .result-box {
             background: #f1f9f1; padding: 20px; border-radius: 15px; text-align: center;
             margin-top: 20px; border: 1px solid #d4ecd5;
@@ -55,6 +53,8 @@
         .result-value { font-size: 2.2rem; font-weight: 800; color: var(--primary); line-height: 1; }
         .result-detail { font-size: 1rem; color: #333; font-weight: 600; margin-top: 5px; }
         
+        .daily-avg { font-size: 0.85rem; color: #666; margin-top: 8px; font-style: italic; }
+
         .total-box {
             margin-top: 15px; padding-top: 15px; border-top: 1px solid #d4ecd5;
             font-size: 0.9rem; color: #555;
@@ -98,6 +98,8 @@
         <div id="result" class="result-value">22,50</div>
         <div id="resultTimeFormat" class="result-detail">(22t 30m)</div>
         
+        <div id="dailyAvg" class="daily-avg">Timer pr. dag (snitt): 3,21</div>
+        
         <div id="totalSection" class="total-box" style="display: none;">
             Totalt for hele perioden (<span id="daysDisplay">0</span> dager):<br>
             <strong><span id="totalHours">0,00</span> timer</strong>
@@ -119,6 +121,7 @@
         const endVal = document.getElementById('endDate').value;
         const fullUke = 37.5; 
 
+        // 1. Ukesberegning
         const restArbeidsevneFaktor = (stilling / 100) * ((100 - sykemelding) / 100);
         const timerUke = restArbeidsevneFaktor * fullUke;
         
@@ -130,6 +133,13 @@
         const mUke = Math.round((timerUke - hUke) * 60);
         document.getElementById('resultTimeFormat').innerText = `(${hUke}t ${mUke}m)`;
 
+        // 2. Dagsgjennomsnitt (snitt over 7 dager)
+        const timerDag = timerUke / 7;
+        document.getElementById('dailyAvg').innerText = `Timer pr. dag (snitt): ${timerDag.toLocaleString('no-NO', { 
+            minimumFractionDigits: 2, maximumFractionDigits: 2 
+        })}`;
+
+        // 3. Total for periode
         const totalBox = document.getElementById('totalSection');
         if (startVal && endVal) {
             const start = new Date(startVal);
@@ -138,7 +148,6 @@
             if (end >= start) {
                 const diffTime = Math.abs(end - start);
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-                const timerDag = timerUke / 7;
                 const totaltTimer = timerDag * diffDays;
 
                 totalBox.style.display = 'block';
@@ -154,7 +163,6 @@
         }
     }
 
-    // Registrer Service Worker for offline bruk
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./service-worker.js');
     }
