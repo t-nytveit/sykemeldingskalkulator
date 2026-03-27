@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KIWI Timekalkulator</title>
+    <title>KIWI Sykemeldingskalkulator</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#18961e">
@@ -70,7 +70,7 @@
         <img src="kiwi-logo-e1620058626739-1024x346.png" alt="KIWI Logo">
     </div>
 
-    <h2>Tidskalkulator</h2>
+    <h2>Sykemeldingskalkulator</h2>
 
     <div class="input-group">
         <label>Stillingsstørrelse (%)</label>
@@ -133,7 +133,7 @@
         const mUke = Math.round((timerUke - hUke) * 60);
         document.getElementById('resultTimeFormat').innerText = `(${hUke}t ${mUke}m)`;
 
-        // 2. Dagsgjennomsnitt (snitt over 7 dager)
+        // 2. Dagsgjennomsnitt
         const timerDag = timerUke / 7;
         document.getElementById('dailyAvg').innerText = `Timer pr. dag (snitt): ${timerDag.toLocaleString('no-NO', { 
             minimumFractionDigits: 2, maximumFractionDigits: 2 
