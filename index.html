@@ -31,7 +31,17 @@
             display: flex; flex-direction: column;
         }
 
-        .logo-container { text-align: center; margin-bottom: 25px; }
+        .logo-container { 
+            text-align: center; 
+            margin-bottom: 25px; 
+            cursor: pointer; /* Viser at logoen er klikkbar */
+            transition: transform 0.2s ease;
+        }
+        
+        .logo-container:active {
+            transform: scale(0.95); /* Gir en liten trykk-effekt */
+        }
+
         .logo-container img { max-width: 160px; height: auto; }
         
         h2 { color: #333; text-align: center; margin-top: 0; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
@@ -70,7 +80,7 @@
 <body>
 
 <div class="container">
-    <div class="logo-container">
+    <div class="logo-container" onclick="refreshPage()" title="Oppdater kalkulatoren">
         <img src="kiwi-logo-e1620058626739-1024x346.png" alt="KIWI Logo">
     </div>
 
@@ -119,6 +129,11 @@
 <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    // Funksjon for å oppdatere siden ved klikk på logo
+    function refreshPage() {
+        window.location.reload();
+    }
+
     function calculate() {
         const stilling = parseFloat(document.getElementById('stilling').value) || 0;
         const sykemelding = parseFloat(document.getElementById('sykemelding').value) || 0;
@@ -126,7 +141,6 @@
         const endVal = document.getElementById('endDate').value;
         const fullUke = 37.5; 
 
-        // 1. Ukesberegning
         const restArbeidsevneFaktor = (stilling / 100) * ((100 - sykemelding) / 100);
         const timerUke = restArbeidsevneFaktor * fullUke;
         
@@ -138,13 +152,11 @@
         const mUke = Math.round((timerUke - hUke) * 60);
         document.getElementById('resultTimeFormat').innerText = `(${hUke}t ${mUke}m)`;
 
-        // 2. Dagsgjennomsnitt
         const timerDag = timerUke / 7;
         document.getElementById('dailyAvg').innerText = `Timer pr. dag (snitt): ${timerDag.toLocaleString('no-NO', { 
             minimumFractionDigits: 2, maximumFractionDigits: 2 
         })}`;
 
-        // 3. Total for periode
         const totalBox = document.getElementById('totalSection');
         if (startVal && endVal) {
             const start = new Date(startVal);
