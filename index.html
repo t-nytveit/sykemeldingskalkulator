@@ -28,7 +28,6 @@
         .container {
             background: var(--card); padding: 30px; border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.08); width: 100%; max-width: 400px;
-            display: flex; flex-direction: column;
         }
 
         .logo-container { 
@@ -37,7 +36,6 @@
             cursor: pointer;
             transition: transform 0.2s ease;
         }
-        
         .logo-container:active { transform: scale(0.95); }
         .logo-container img { max-width: 160px; height: auto; }
         
@@ -48,25 +46,26 @@
         
         input {
             width: 100%; padding: 12px; border: 1.5px solid #dee2e6; border-radius: 10px;
-            font-size: 16px; box-sizing: border-box; background-color: #fcfcfc;
+            font-size: 18px; box-sizing: border-box; background-color: #fcfcfc; text-align: center;
         }
 
-        .result-box {
+        .status-badge {
+            background: #e8f5e9; color: #2e7d32; padding: 8px; border-radius: 10px;
+            font-weight: 700; text-align: center; margin-bottom: 20px; font-size: 0.9rem;
+            border: 1px solid #c8e6c9;
+        }
+
+        .result-section {
             background: #f1f9f1; padding: 20px; border-radius: 15px; text-align: center;
-            margin-top: 20px; border: 1px solid #d4ecd5;
+            border: 1px solid #d4ecd5;
         }
 
-        .result-label { font-size: 0.9rem; color: #444; margin-bottom: 5px; }
+        .main-result { margin-bottom: 20px; }
+        .result-label { font-size: 0.85rem; color: #444; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
         .result-value { font-size: 2.2rem; font-weight: 800; color: var(--primary); line-height: 1; }
-        .result-detail { font-size: 1rem; color: #333; font-weight: 600; margin-top: 5px; }
-        
-        .shift-info {
-            margin-top: 20px; padding-top: 15px; border-top: 1.5px solid #d4ecd5;
-            text-align: center;
-        }
+        .result-sub { font-size: 1.1rem; color: #333; font-weight: 600; }
 
-        .shift-label { font-size: 0.85rem; color: #444; margin-bottom: 8px; font-weight: 600; }
-        .shift-value { font-size: 1.3rem; color: #333; font-weight: 700; }
+        .divider { height: 1.5px; background: #d4ecd5; margin: 15px 0; }
 
         .copyright { margin-top: 30px; text-align: center; font-size: 0.75rem; color: var(--text-muted); }
     </style>
@@ -74,11 +73,13 @@
 <body>
 
 <div class="container">
-    <div class="logo-container" onclick="refreshPage()" title="Nullstill">
+    <div class="logo-container" onclick="window.location.reload()" title="Nullstill">
         <img src="kiwi-logo-e1620058626739-1024x346.png" alt="KIWI Logo">
     </div>
 
     <h2>Sykemeldingskalkulator</h2>
+
+    <div id="status" class="status-badge">RESTARBEIDSEVNE: 60% FRISK</div>
 
     <div class="input-group">
         <label>Stillingsstørrelse (%)</label>
@@ -90,15 +91,19 @@
         <input type="number" id="sykemelding" value="40" oninput="calculate()" inputmode="decimal">
     </div>
 
-    <div class="result-box">
-        <div class="result-label">Timer å jobbe pr. uke:</div>
-        <div id="result" class="result-value">22,50</div>
-        <div id="resultTimeFormat" class="result-detail">(22t 30m)</div>
-        
-        <div class="shift-info">
-            <div class="shift-label">Tilsvarer arbeidsdag (av 7,5t):</div>
-            <div id="shiftResult" class="shift-value">4,50 timer</div>
-            <div id="shiftTimeFormat" style="font-size: 0.9rem; color: #666;">(4t 30m)</div>
+    <div class="result-section">
+        <div class="main-result">
+            <div class="result-label">Timer å jobbe pr. uke:</div>
+            <div id="resUke" class="result-value">22,50</div>
+            <div id="resUkeKlokke" class="result-sub">22t 30m</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="main-result">
+            <div class="result-label">Ved full arbeidsdag (7,5t):</div>
+            <div id="resDag" class="result-value" style="font-size: 1.8rem;">4,50</div>
+            <div id="resDagKlokke" class="result-sub">4t 30m</div>
         </div>
     </div>
 
@@ -110,40 +115,33 @@
 <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    function refreshPage() {
-        window.location.reload();
-    }
-
-    function formatTime(decimalHours) {
-        const h = Math.floor(decimalHours);
-        const m = Math.round((decimalHours - h) * 60);
-        return `(${h}t ${m}m)`;
+    function formatToTime(decimalHours) {
+        const h = Math.floor(Math.abs(decimalHours));
+        const m = Math.round((Math.abs(decimalHours) - h) * 60);
+        return `${h}t ${m}m`;
     }
 
     function calculate() {
         const stilling = parseFloat(document.getElementById('stilling').value) || 0;
         const sykemelding = parseFloat(document.getElementById('sykemelding').value) || 0;
-        const fullUke = 37.5; 
-        const fullDag = 7.5;
-
-        // 1. Ukesberegning
-        const restArbeidsevneFaktor = (stilling / 100) * ((100 - sykemelding) / 100);
-        const timerUke = restArbeidsevneFaktor * fullUke;
         
-        document.getElementById('result').innerText = timerUke.toLocaleString('no-NO', { 
-            minimumFractionDigits: 2, maximumFractionDigits: 2 
-        });
-        document.getElementById('resultTimeFormat').innerText = formatTime(timerUke);
+        const restProsent = 100 - sykemelding;
+        const restFaktor = restProsent / 100;
+        const stillingFaktor = stilling / 100;
 
-        // 2. Beregning av vaktlengde (basert på 7,5t dag)
-        // Her regner vi ut rest-prosenten av en full arbeidsdag
-        const restProsentAvFullStilling = (100 - sykemelding) / 100;
-        const timerVakt = fullDag * restProsentAvFullStilling;
+        // Oppdater statusbadge
+        document.getElementById('status').innerText = `RESTARBEIDSEVNE: ${restProsent}% FRISK`;
 
-        document.getElementById('shiftResult').innerText = timerVakt.toLocaleString('no-NO', { 
-            minimumFractionDigits: 2, maximumFractionDigits: 2 
-        }) + " timer";
-        document.getElementById('shiftTimeFormat').innerText = formatTime(timerVakt);
+        // 1. Ukesberegning (Stillings% x Restarbeidsevne% x 37.5)
+        const timerUke = (stillingFaktor * restFaktor) * 37.5;
+        document.getElementById('resUke').innerText = timerUke.toLocaleString('no-NO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        document.getElementById('resUkeKlokke').innerText = formatToTime(timerUke);
+
+        // 2. Dagsberegning (7.5 x Restarbeidsevne%)
+        // Vi tar utgangspunkt i en full dag (7,5t) og ser hvor mye av den man skal jobbe
+        const timerDag = 7.5 * restFaktor;
+        document.getElementById('resDag').innerText = timerDag.toLocaleString('no-NO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        document.getElementById('resDagKlokke').innerText = formatToTime(timerDag);
     }
 
     if ('serviceWorker' in navigator) {
