@@ -34,14 +34,11 @@
         .logo-container { 
             text-align: center; 
             margin-bottom: 25px; 
-            cursor: pointer; /* Viser at logoen er klikkbar */
+            cursor: pointer;
             transition: transform 0.2s ease;
         }
         
-        .logo-container:active {
-            transform: scale(0.95); /* Gir en liten trykk-effekt */
-        }
-
+        .logo-container:active { transform: scale(0.95); }
         .logo-container img { max-width: 160px; height: auto; }
         
         h2 { color: #333; text-align: center; margin-top: 0; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
@@ -63,16 +60,13 @@
         .result-value { font-size: 2.2rem; font-weight: 800; color: var(--primary); line-height: 1; }
         .result-detail { font-size: 1rem; color: #333; font-weight: 600; margin-top: 5px; }
         
-        .daily-avg { font-size: 0.85rem; color: #666; margin-top: 8px; font-weight: bold; }
-
-        .explanation-text {
-            font-size: 0.75rem; color: #666; font-style: italic; margin-top: 5px; line-height: 1.3;
+        .shift-info {
+            margin-top: 20px; padding-top: 15px; border-top: 1.5px solid #d4ecd5;
+            text-align: center;
         }
 
-        .total-box {
-            margin-top: 15px; padding-top: 15px; border-top: 1px solid #d4ecd5;
-            font-size: 0.9rem; color: #555;
-        }
+        .shift-label { font-size: 0.85rem; color: #444; margin-bottom: 8px; font-weight: 600; }
+        .shift-value { font-size: 1.3rem; color: #333; font-weight: 700; }
 
         .copyright { margin-top: 30px; text-align: center; font-size: 0.75rem; color: var(--text-muted); }
     </style>
@@ -80,7 +74,7 @@
 <body>
 
 <div class="container">
-    <div class="logo-container" onclick="refreshPage()" title="Oppdater kalkulatoren">
+    <div class="logo-container" onclick="refreshPage()" title="Nullstill">
         <img src="kiwi-logo-e1620058626739-1024x346.png" alt="KIWI Logo">
     </div>
 
@@ -96,28 +90,15 @@
         <input type="number" id="sykemelding" value="40" oninput="calculate()" inputmode="decimal">
     </div>
 
-    <div style="display: flex; gap: 10px;">
-        <div class="input-group" style="flex: 1;">
-            <label>Fra dato</label>
-            <input type="date" id="startDate" oninput="calculate()">
-        </div>
-        <div class="input-group" style="flex: 1;">
-            <label>Til dato</label>
-            <input type="date" id="endDate" oninput="calculate()">
-        </div>
-    </div>
-
     <div class="result-box">
         <div class="result-label">Timer å jobbe pr. uke:</div>
         <div id="result" class="result-value">22,50</div>
         <div id="resultTimeFormat" class="result-detail">(22t 30m)</div>
         
-        <div id="dailyAvg" class="daily-avg">Timer pr. dag (snitt): 3,21</div>
-        <div class="explanation-text">Dette er et matematisk gjennomsnitt fordelt på 7 dager. Timene kan fordeles fritt over dine faktiske arbeidsdager i vaktplanen.</div>
-        
-        <div id="totalSection" class="total-box" style="display: none;">
-            Totalt for hele perioden (<span id="daysDisplay">0</span> dager):<br>
-            <strong><span id="totalHours">0,00</span> timer</strong>
+        <div class="shift-info">
+            <div class="shift-label">Tilsvarer arbeidsdag (av 7,5t):</div>
+            <div id="shiftResult" class="shift-value">4,50 timer</div>
+            <div id="shiftTimeFormat" style="font-size: 0.9rem; color: #666;">(4t 30m)</div>
         </div>
     </div>
 
@@ -129,55 +110,40 @@
 <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Funksjon for å oppdatere siden ved klikk på logo
     function refreshPage() {
         window.location.reload();
+    }
+
+    function formatTime(decimalHours) {
+        const h = Math.floor(decimalHours);
+        const m = Math.round((decimalHours - h) * 60);
+        return `(${h}t ${m}m)`;
     }
 
     function calculate() {
         const stilling = parseFloat(document.getElementById('stilling').value) || 0;
         const sykemelding = parseFloat(document.getElementById('sykemelding').value) || 0;
-        const startVal = document.getElementById('startDate').value;
-        const endVal = document.getElementById('endDate').value;
         const fullUke = 37.5; 
+        const fullDag = 7.5;
 
+        // 1. Ukesberegning
         const restArbeidsevneFaktor = (stilling / 100) * ((100 - sykemelding) / 100);
         const timerUke = restArbeidsevneFaktor * fullUke;
         
         document.getElementById('result').innerText = timerUke.toLocaleString('no-NO', { 
             minimumFractionDigits: 2, maximumFractionDigits: 2 
         });
+        document.getElementById('resultTimeFormat').innerText = formatTime(timerUke);
 
-        const hUke = Math.floor(timerUke);
-        const mUke = Math.round((timerUke - hUke) * 60);
-        document.getElementById('resultTimeFormat').innerText = `(${hUke}t ${mUke}m)`;
+        // 2. Beregning av vaktlengde (basert på 7,5t dag)
+        // Her regner vi ut rest-prosenten av en full arbeidsdag
+        const restProsentAvFullStilling = (100 - sykemelding) / 100;
+        const timerVakt = fullDag * restProsentAvFullStilling;
 
-        const timerDag = timerUke / 7;
-        document.getElementById('dailyAvg').innerText = `Timer pr. dag (snitt): ${timerDag.toLocaleString('no-NO', { 
+        document.getElementById('shiftResult').innerText = timerVakt.toLocaleString('no-NO', { 
             minimumFractionDigits: 2, maximumFractionDigits: 2 
-        })}`;
-
-        const totalBox = document.getElementById('totalSection');
-        if (startVal && endVal) {
-            const start = new Date(startVal);
-            const end = new Date(endVal);
-            
-            if (end >= start) {
-                const diffTime = Math.abs(end - start);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-                const totaltTimer = timerDag * diffDays;
-
-                totalBox.style.display = 'block';
-                document.getElementById('daysDisplay').innerText = diffDays;
-                document.getElementById('totalHours').innerText = totaltTimer.toLocaleString('no-NO', { 
-                    minimumFractionDigits: 2, maximumFractionDigits: 2 
-                });
-            } else {
-                totalBox.style.display = 'none';
-            }
-        } else {
-            totalBox.style.display = 'none';
-        }
+        }) + " timer";
+        document.getElementById('shiftTimeFormat').innerText = formatTime(timerVakt);
     }
 
     if ('serviceWorker' in navigator) {
