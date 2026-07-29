@@ -10,7 +10,7 @@
 
     <meta
         name="description"
-        content="Beregn arbeidstid ved gradert sykmelding basert på stillingsprosent, sykmeldingsgrad og ukentlig arbeidstid."
+        content="Beregn arbeidstid ved gradert sykmelding basert på stillingsprosent, sykmeldingsgrad, ukentlig arbeidstid og antall arbeidsdager."
     >
 
     <meta name="theme-color" content="#0a0d10">
@@ -56,14 +56,11 @@
             --background: #07090b;
             --surface: rgba(18, 22, 26, 0.94);
             --surface-light: rgba(255, 255, 255, 0.045);
-            --surface-strong: rgba(255, 255, 255, 0.07);
 
             --gold: #d9aa45;
             --gold-light: #f6d777;
-            --gold-soft: rgba(217, 170, 69, 0.12);
 
             --teal: #28e0c0;
-            --teal-soft: rgba(40, 224, 192, 0.10);
 
             --text: #f4f5f6;
             --text-muted: #9ca7b1;
@@ -760,16 +757,14 @@
             bottom: 24px;
             z-index: 1000;
 
-            transform:
-                translate(-50%, 24px);
+            transform: translate(-50%, 24px);
 
             border: 1px solid var(--border-teal);
             border-radius: 999px;
 
             color: var(--text);
 
-            background:
-                rgba(13, 25, 23, 0.96);
+            background: rgba(13, 25, 23, 0.96);
 
             box-shadow:
                 0 14px 40px rgba(0, 0, 0, 0.45),
@@ -791,8 +786,7 @@
         }
 
         .toast.visible {
-            transform:
-                translate(-50%, 0);
+            transform: translate(-50%, 0);
 
             opacity: 1;
             visibility: visible;
@@ -1031,10 +1025,55 @@
                         ▼
                     </span>
                 </div>
+            </div>
+
+            <div class="field-group">
+                <label for="workDays">
+                    Arbeidsdager per uke
+                </label>
+
+                <div class="field-wrapper">
+                    <select id="workDays">
+                        <option value="1">
+                            1 arbeidsdag
+                        </option>
+
+                        <option value="2">
+                            2 arbeidsdager
+                        </option>
+
+                        <option value="3">
+                            3 arbeidsdager
+                        </option>
+
+                        <option value="4">
+                            4 arbeidsdager
+                        </option>
+
+                        <option
+                            value="5"
+                            selected
+                        >
+                            5 arbeidsdager
+                        </option>
+
+                        <option value="6">
+                            6 arbeidsdager
+                        </option>
+
+                        <option value="7">
+                            7 arbeidsdager
+                        </option>
+                    </select>
+
+                    <span class="select-arrow">
+                        ▼
+                    </span>
+                </div>
 
                 <div class="field-help">
-                    Dagsberegningen tar utgangspunkt i fem
-                    like arbeidsdager per uke.
+                    Dagsresultatet viser et gjennomsnitt
+                    fordelt på valgt antall arbeidsdager.
                 </div>
             </div>
         </section>
@@ -1090,8 +1129,11 @@
             </article>
 
             <article class="result-card">
-                <div class="result-label">
-                    Ved fem arbeidsdager
+                <div
+                    id="dailyResultLabel"
+                    class="result-label"
+                >
+                    Gjennomsnitt per arbeidsdag
                 </div>
 
                 <div
@@ -1188,7 +1230,10 @@
             </div>
         </section>
 
-        <p class="disclaimer">
+        <p
+            id="disclaimer"
+            class="disclaimer"
+        >
             Dagsresultatet viser et gjennomsnitt dersom
             arbeidstiden fordeles likt på fem arbeidsdager.
             Den faktiske fordelingen må avtales mellom
@@ -1221,7 +1266,8 @@
         const DEFAULT_VALUES = {
             positionPercentage: 80,
             sickLeavePercentage: 60,
-            fullWeekHours: 37.5
+            fullWeekHours: 37.5,
+            workDays: 5
         };
 
         const STORAGE_KEYS = {
@@ -1232,7 +1278,10 @@
                 "octacore-sick-leave-percentage",
 
             fullWeekHours:
-                "octacore-full-week-hours"
+                "octacore-full-week-hours",
+
+            workDays:
+                "octacore-work-days"
         };
 
         let toastTimeout = null;
@@ -1242,6 +1291,7 @@
             positionPercentage: 80,
             sickLeavePercentage: 60,
             fullWeekHours: 37.5,
+            workDays: 5,
             workSharePercentage: 40,
             fullPositionPercentage: 32,
             weeklyHours: 12,
@@ -1262,6 +1312,11 @@
             fullWeekHours:
                 document.getElementById(
                     "fullWeekHours"
+                ),
+
+            workDays:
+                document.getElementById(
+                    "workDays"
                 ),
 
             positionError:
@@ -1292,6 +1347,11 @@
             weeklyTime:
                 document.getElementById(
                     "weeklyTime"
+                ),
+
+            dailyResultLabel:
+                document.getElementById(
+                    "dailyResultLabel"
                 ),
 
             dailyResult:
@@ -1342,6 +1402,11 @@
             formulaDay:
                 document.getElementById(
                     "formulaDay"
+                ),
+
+            disclaimer:
+                document.getElementById(
+                    "disclaimer"
                 ),
 
             toast:
@@ -1439,6 +1504,12 @@
                 totalMinutes % 60;
 
             return `${hours} t ${minutes} min`;
+        }
+
+        function formatWorkDaysText(workDays) {
+            return workDays === 1
+                ? "én arbeidsdag"
+                : `${workDays} arbeidsdager`;
         }
 
         function validatePercentage(
@@ -1576,6 +1647,11 @@
                 STORAGE_KEYS.fullWeekHours,
                 elements.fullWeekHours.value
             );
+
+            localStorage.setItem(
+                STORAGE_KEYS.workDays,
+                elements.workDays.value
+            );
         }
 
         function loadValues() {
@@ -1594,6 +1670,11 @@
                     STORAGE_KEYS.fullWeekHours
                 );
 
+            const savedWorkDays =
+                localStorage.getItem(
+                    STORAGE_KEYS.workDays
+                );
+
             if (savedPosition !== null) {
                 elements.positionPercentage.value =
                     savedPosition;
@@ -1608,18 +1689,39 @@
                 elements.fullWeekHours.value =
                     savedWeekHours;
             }
+
+            if (savedWorkDays !== null) {
+                elements.workDays.value =
+                    savedWorkDays;
+            }
         }
 
         function showInvalidResults() {
-            elements.weeklyResult.textContent = "–";
+            elements.weeklyResult.textContent =
+                "–";
 
             elements.weeklyTime.textContent =
                 "Kontroller verdiene";
 
-            elements.dailyResult.textContent = "–";
+            elements.dailyResult.textContent =
+                "–";
 
             elements.dailyTime.textContent =
                 "Kontroller verdiene";
+        }
+
+        function updateDynamicText(workDays) {
+            elements.dailyResultLabel.textContent =
+                workDays === 1
+                    ? "Arbeidstid denne arbeidsdagen"
+                    : "Gjennomsnitt per arbeidsdag";
+
+            elements.disclaimer.textContent =
+                `Dagsresultatet viser et gjennomsnitt dersom ` +
+                `arbeidstiden fordeles likt på ` +
+                `${formatWorkDaysText(workDays)} per uke. ` +
+                `Den faktiske fordelingen må avtales mellom ` +
+                `arbeidsgiver og arbeidstaker.`;
         }
 
         function updateFormula({
@@ -1628,6 +1730,7 @@
             workSharePercentage,
             fullPositionPercentage,
             fullWeekHours,
+            workDays,
             weeklyHours,
             dailyHours
         }) {
@@ -1659,7 +1762,7 @@
             elements.formulaDay.textContent =
                 `${formatNumber(
                     weeklyHours
-                )} t ÷ 5 = ${formatNumber(
+                )} t ÷ ${workDays} = ${formatNumber(
                     dailyHours
                 )} t`;
         }
@@ -1704,6 +1807,17 @@
                     elements.fullWeekHours.value
                 );
 
+            const workDays =
+                clamp(
+                    Math.round(
+                        parseNumber(
+                            elements.workDays.value
+                        )
+                    ),
+                    1,
+                    7
+                );
+
             const workSharePercentage =
                 100 -
                 sickLeavePercentage;
@@ -1729,11 +1843,16 @@
                         fullPositionPercentage
                     )} %`;
 
+            updateDynamicText(
+                workDays
+            );
+
             if (
                 !positionIsValid ||
                 !sickLeaveIsValid
             ) {
-                currentCalculation.isValid = false;
+                currentCalculation.isValid =
+                    false;
 
                 showInvalidResults();
 
@@ -1749,13 +1868,14 @@
 
             const dailyHours =
                 weeklyHours /
-                5;
+                workDays;
 
             currentCalculation = {
                 isValid: true,
                 positionPercentage,
                 sickLeavePercentage,
                 fullWeekHours,
+                workDays,
                 workSharePercentage,
                 fullPositionPercentage,
                 weeklyHours,
@@ -1788,6 +1908,7 @@
                 workSharePercentage,
                 fullPositionPercentage,
                 fullWeekHours,
+                workDays,
                 weeklyHours,
                 dailyHours
             });
@@ -1798,6 +1919,11 @@
         function buildShareText() {
             const calculation =
                 currentCalculation;
+
+            const daysText =
+                calculation.workDays === 1
+                    ? "1 arbeidsdag"
+                    : `${calculation.workDays} arbeidsdager`;
 
             return [
                 "OctaCore Sykemeldingskalkulator",
@@ -1822,11 +1948,13 @@
                     calculation.fullWeekHours
                 )} timer`,
 
+                `Arbeidsdager per uke: ${daysText}`,
+
                 `Arbeidstid per uke: ${formatTime(
                     calculation.weeklyHours
                 )}`,
 
-                `Gjennomsnitt per arbeidsdag ved fem dager: ${formatTime(
+                `Gjennomsnitt per arbeidsdag: ${formatTime(
                     calculation.dailyHours
                 )}`,
 
@@ -1982,9 +2110,7 @@
                     showToast(
                         "Resultatet er kopiert"
                     );
-                } catch (
-                    copyError
-                ) {
+                } catch (copyError) {
                     console.error(
                         "Resultatet kunne ikke deles:",
                         copyError
@@ -2007,6 +2133,11 @@
             elements.fullWeekHours.value =
                 String(
                     DEFAULT_VALUES.fullWeekHours
+                );
+
+            elements.workDays.value =
+                String(
+                    DEFAULT_VALUES.workDays
                 );
 
             Object
@@ -2058,6 +2189,13 @@
 
         elements
             .fullWeekHours
+            .addEventListener(
+                "change",
+                calculate
+            );
+
+        elements
+            .workDays
             .addEventListener(
                 "change",
                 calculate
