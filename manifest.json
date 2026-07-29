@@ -1,25 +1,66 @@
 {
+  "id": "./",
   "name": "OctaCore Sykemeldingskalkulator",
-  "short_name": "Sykekalk",
-  "description": "Beregn arbeidstid ved gradert sykmelding.",
+  "short_name": "Sykekalkulator",
+  "description": "Beregn arbeidstid ved gradert sykmelding basert på stillingsprosent, sykmeldingsgrad, ukentlig arbeidstid og antall arbeidsdager.",
+  "lang": "no",
+  "dir": "ltr",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "portrait-primary",
-  "background_color": "#080A0C",
-  "theme_color": "#0B0D0F",
+  "background_color": "#07090b",
+  "theme_color": "#0a0d10",
+  "categories": [
+    "productivity",
+    "utilities",
+    "business"
+  ],
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Ny beregning",
+      "short_name": "Ny beregning",
+      "description": "Åpne sykmeldingskalkulatoren og start en ny beregning.",
+      "url": "./?action=new",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
 }
