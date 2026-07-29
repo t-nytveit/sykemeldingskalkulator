@@ -1,5 +1,5 @@
 const CACHE_NAME =
-    "octacore-sykemeldingskalkulator-v4";
+    "octacore-sykemeldingskalkulator-v5";
 
 const APP_ASSETS = [
     "./",
@@ -71,8 +71,22 @@ self.addEventListener(
             return;
         }
 
+        const requestUrl =
+            new URL(
+                event.request.url
+            );
+
+        if (
+            requestUrl.origin !==
+            self.location.origin
+        ) {
+            return;
+        }
+
         event.respondWith(
-            fetch(event.request)
+            fetch(
+                event.request
+            )
                 .then(
                     networkResponse => {
                         if (
@@ -86,7 +100,9 @@ self.addEventListener(
                             networkResponse.clone();
 
                         caches
-                            .open(CACHE_NAME)
+                            .open(
+                                CACHE_NAME
+                            )
                             .then(
                                 cache =>
                                     cache.put(
@@ -99,16 +115,36 @@ self.addEventListener(
                     }
                 )
                 .catch(
-                    () =>
-                        caches
-                            .match(event.request)
-                            .then(
-                                cachedResponse =>
-                                    cachedResponse ||
-                                    caches.match(
-                                        "./index.html"
-                                    )
-                            )
+                    async () => {
+                        const cachedResponse =
+                            await caches.match(
+                                event.request
+                            );
+
+                        if (cachedResponse) {
+                            return cachedResponse;
+                        }
+
+                        if (
+                            event.request.mode ===
+                            "navigate"
+                        ) {
+                            return caches.match(
+                                "./index.html"
+                            );
+                        }
+
+                        return new Response(
+                            "Innholdet er ikke tilgjengelig uten nett.",
+                            {
+                                status: 503,
+                                headers: {
+                                    "Content-Type":
+                                        "text/plain; charset=utf-8"
+                                }
+                            }
+                        );
+                    }
                 )
         );
     }
