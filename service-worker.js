@@ -1,20 +1,16 @@
 const CACHE_NAME =
-    "octacore-sykemeldingskalkulator-v3";
+    "octacore-sykemeldingskalkulator-v4";
 
 const APP_ASSETS = [
     "./",
     "./index.html",
     "./manifest.json",
-
     "./OctaCore_Core_Symbol_Transparent.svg",
-
     "./favicon.ico",
     "./favicon-16.png",
     "./favicon-32.png",
     "./favicon-48.png",
-
     "./apple-touch-icon.png",
-
     "./icon-192.png",
     "./icon-512.png"
 ];
@@ -24,15 +20,12 @@ self.addEventListener(
     event => {
         event.waitUntil(
             caches
-                .open(
-                    CACHE_NAME
-                )
+                .open(CACHE_NAME)
                 .then(
-                    cache => {
-                        return cache.addAll(
+                    cache =>
+                        cache.addAll(
                             APP_ASSETS
-                        );
-                    }
+                        )
                 )
         );
 
@@ -47,8 +40,8 @@ self.addEventListener(
             caches
                 .keys()
                 .then(
-                    cacheNames => {
-                        return Promise.all(
+                    cacheNames =>
+                        Promise.all(
                             cacheNames
                                 .filter(
                                     cacheName =>
@@ -61,8 +54,7 @@ self.addEventListener(
                                             cacheName
                                         )
                                 )
-                        );
-                    }
+                        )
                 )
         );
 
@@ -74,62 +66,49 @@ self.addEventListener(
     "fetch",
     event => {
         if (
-            event.request.method !==
-            "GET"
+            event.request.method !== "GET"
         ) {
             return;
         }
 
         event.respondWith(
-            fetch(
-                event.request
-            )
+            fetch(event.request)
                 .then(
                     networkResponse => {
                         if (
                             !networkResponse ||
-                            networkResponse.status !==
-                                200
+                            networkResponse.status !== 200
                         ) {
                             return networkResponse;
                         }
 
-                        const responseToCache =
+                        const responseCopy =
                             networkResponse.clone();
 
                         caches
-                            .open(
-                                CACHE_NAME
-                            )
+                            .open(CACHE_NAME)
                             .then(
-                                cache => {
+                                cache =>
                                     cache.put(
                                         event.request,
-                                        responseToCache
-                                    );
-                                }
+                                        responseCopy
+                                    )
                             );
 
                         return networkResponse;
                     }
                 )
                 .catch(
-                    () => {
-                        return caches
-                            .match(
-                                event.request
-                            )
+                    () =>
+                        caches
+                            .match(event.request)
                             .then(
-                                cachedResponse => {
-                                    return (
-                                        cachedResponse ||
-                                        caches.match(
-                                            "./index.html"
-                                        )
-                                    );
-                                }
-                            );
-                    }
+                                cachedResponse =>
+                                    cachedResponse ||
+                                    caches.match(
+                                        "./index.html"
+                                    )
+                            )
                 )
         );
     }
