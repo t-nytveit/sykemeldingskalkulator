@@ -1,5 +1,5 @@
 const CACHE_NAME =
-    "octacore-sykemeldingskalkulator-v6";
+    "octacore-sykemeldingskalkulator-v7";
 
 const APP_ASSETS = [
     "./",
@@ -28,8 +28,6 @@ self.addEventListener(
                         )
                 )
         );
-
-        self.skipWaiting();
     }
 );
 
@@ -56,9 +54,24 @@ self.addEventListener(
                                 )
                         )
                 )
+                .then(
+                    () =>
+                        self.clients.claim()
+                )
         );
+    }
+);
 
-        self.clients.claim();
+self.addEventListener(
+    "message",
+    event => {
+        if (
+            event.data &&
+            event.data.type ===
+                "SKIP_WAITING"
+        ) {
+            self.skipWaiting();
+        }
     }
 );
 
@@ -66,7 +79,8 @@ self.addEventListener(
     "fetch",
     event => {
         if (
-            event.request.method !== "GET"
+            event.request.method !==
+            "GET"
         ) {
             return;
         }
@@ -83,56 +97,94 @@ self.addEventListener(
             return;
         }
 
-        event.respondWith(
-            fetch(
-                event.request
-            )
-                .then(
-                    networkResponse => {
-                        if (
-                            !networkResponse ||
-                            networkResponse.status !== 200
-                        ) {
+        if (
+            event.request.mode ===
+            "navigate"
+        ) {
+            event.respondWith(
+                fetch(
+                    event.request
+                )
+                    .then(
+                        networkResponse => {
+                            const responseCopy =
+                                networkResponse.clone();
+
+                            caches
+                                .open(
+                                    CACHE_NAME
+                                )
+                                .then(
+                                    cache =>
+                                        cache.put(
+                                            "./index.html",
+                                            responseCopy
+                                        )
+                                );
+
                             return networkResponse;
                         }
+                    )
+                    .catch(
+                        () =>
+                            caches.match(
+                                "./index.html"
+                            )
+                    )
+            );
 
-                        const responseCopy =
-                            networkResponse.clone();
+            return;
+        }
 
-                        caches
-                            .open(CACHE_NAME)
-                            .then(
-                                cache =>
-                                    cache.put(
-                                        event.request,
-                                        responseCopy
-                                    )
-                            );
-
-                        return networkResponse;
-                    }
+        event.respondWith(
+            caches
+                .match(
+                    event.request
                 )
-                .catch(
-                    async () => {
-                        const cachedResponse =
-                            await caches.match(
-                                event.request
-                            );
-
-                        if (cachedResponse) {
+                .then(
+                    cachedResponse => {
+                        if (
+                            cachedResponse
+                        ) {
                             return cachedResponse;
                         }
 
-                        if (
-                            event.request.mode ===
-                            "navigate"
-                        ) {
-                            return caches.match(
-                                "./index.html"
-                            );
-                        }
+                        return fetch(
+                            event.request
+                        )
+                            .then(
+                                networkResponse => {
+                                    if (
+                                        !networkResponse ||
+                                        networkResponse.status !==
+                                            200
+                                    ) {
+                                        return networkResponse;
+                                    }
 
-                        return new Response(
+                                    const responseCopy =
+                                        networkResponse.clone();
+
+                                    caches
+                                        .open(
+                                            CACHE_NAME
+                                        )
+                                        .then(
+                                            cache =>
+                                                cache.put(
+                                                    event.request,
+                                                    responseCopy
+                                                )
+                                        );
+
+                                    return networkResponse;
+                                }
+                            );
+                    }
+                )
+                .catch(
+                    () =>
+                        new Response(
                             "Innholdet er ikke tilgjengelig uten nett.",
                             {
                                 status: 503,
@@ -141,8 +193,7 @@ self.addEventListener(
                                         "text/plain; charset=utf-8"
                                 }
                             }
-                        );
-                    }
+                        )
                 )
         );
     }
