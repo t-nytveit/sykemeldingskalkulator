@@ -2,37 +2,88 @@
 <html lang="no">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Beregn arbeidstid ved gradert sykmelding basert på stillingsprosent og sykmeldingsgrad.">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <meta
+        name="description"
+        content="Beregn arbeidstid ved gradert sykmelding basert på stillingsprosent og sykmeldingsgrad."
+    >
 
     <title>OctaCore Sykemeldingskalkulator</title>
 
     <link rel="manifest" href="manifest.json">
+
     <meta name="theme-color" content="#0B0D0F">
 
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-    <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
-    <link rel="shortcut icon" href="favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="16x16"
+        href="favicon-16.png"
+    >
+
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="favicon-32.png"
+    >
+
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="48x48"
+        href="favicon-48.png"
+    >
+
+    <link
+        rel="shortcut icon"
+        href="favicon.ico"
+    >
+
+    <link
+        rel="apple-touch-icon"
+        sizes="180x180"
+        href="apple-touch-icon.png"
+    >
 
     <style>
         :root {
-            --background: #080A0C;
-            --surface: rgba(19, 23, 27, 0.94);
-            --surface-light: #171C21;
+            --background: #080a0c;
+            --surface: rgba(18, 22, 26, 0.96);
+            --surface-light: #181d22;
+            --surface-lighter: #20262c;
+
             --border: rgba(246, 215, 119, 0.22);
-            --border-strong: rgba(40, 224, 192, 0.38);
-            --gold: #D9AA45;
-            --gold-light: #F6D777;
-            --teal: #28E0C0;
-            --text: #F4F5F6;
-            --text-muted: #9EA8B2;
-            --danger: #FF6B6B;
-            --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+            --border-strong: rgba(40, 224, 192, 0.42);
+
+            --gold: #d9aa45;
+            --gold-light: #f6d777;
+
+            --teal: #28e0c0;
+            --teal-dark: #0b7c70;
+
+            --text: #f4f5f6;
+            --text-muted: #9ea8b2;
+            --text-dimmed: #707b85;
+
+            --danger: #ff6b6b;
+
+            --shadow:
+                0 24px 60px rgba(0, 0, 0, 0.48);
+
+            --radius-large: 28px;
+            --radius-medium: 20px;
+            --radius-small: 14px;
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         html {
             min-height: 100%;
@@ -43,221 +94,640 @@
             min-height: 100vh;
             margin: 0;
             padding: 24px;
+
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                sans-serif;
+
             color: var(--text);
+
             background:
-                radial-gradient(circle at 50% 0%, rgba(40, 224, 192, 0.10), transparent 36%),
-                radial-gradient(circle at 10% 90%, rgba(217, 170, 69, 0.09), transparent 34%),
-                linear-gradient(145deg, #07090B 0%, #0C1014 55%, #07090B 100%);
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(40, 224, 192, 0.10),
+                    transparent 36%
+                ),
+                radial-gradient(
+                    circle at 10% 90%,
+                    rgba(217, 170, 69, 0.09),
+                    transparent 34%
+                ),
+                linear-gradient(
+                    145deg,
+                    #07090b 0%,
+                    #0c1014 55%,
+                    #07090b 100%
+                );
         }
 
-        button, input { font: inherit; }
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            -webkit-tap-highlight-color: transparent;
+        }
 
         .container {
             width: 100%;
-            max-width: 430px;
+            max-width: 440px;
+
             padding: 28px;
-            overflow: hidden;
+
             position: relative;
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            background: var(--surface);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            overflow: hidden;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                var(--radius-large);
+
+            background:
+                var(--surface);
+
+            box-shadow:
+                var(--shadow);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
         }
 
         .container::before {
             content: "";
+
             position: absolute;
             inset: 0;
+
             pointer-events: none;
+
             background:
-                linear-gradient(135deg, rgba(255,255,255,0.035), transparent 32%),
-                linear-gradient(315deg, rgba(40,224,192,0.025), transparent 38%);
+                linear-gradient(
+                    135deg,
+                    rgba(255, 255, 255, 0.035),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    315deg,
+                    rgba(40, 224, 192, 0.025),
+                    transparent 38%
+                );
         }
 
-        .logo-button {
-            width: 100%;
-            margin: 0 0 18px;
-            padding: 0;
-            display: block;
-            border: 0;
-            background: transparent;
-            cursor: pointer;
+        .brand-header {
+            margin-bottom: 20px;
+
             position: relative;
             z-index: 1;
         }
 
-        .logo-button:active { transform: scale(0.985); }
-
-        .logo-button img {
+        .brand-header img {
             width: 100%;
-            max-width: 330px;
+            max-width: 355px;
             height: auto;
+
             display: block;
             margin: 0 auto;
         }
 
         .intro {
             margin-bottom: 22px;
+
             text-align: center;
+
             position: relative;
             z-index: 1;
         }
 
         h1 {
-            margin: 0 0 8px;
-            font-size: clamp(1.35rem, 5vw, 1.75rem);
-            line-height: 1.1;
-            letter-spacing: 0.08em;
+            margin: 0 0 10px;
+
+            font-size:
+                clamp(
+                    1.2rem,
+                    5vw,
+                    1.55rem
+                );
+
+            font-weight: 760;
+            line-height: 1.15;
+
+            letter-spacing: 0.07em;
+
             text-transform: uppercase;
         }
 
         .intro p {
-            margin: 0;
+            max-width: 340px;
+
+            margin: 0 auto;
+
             color: var(--text-muted);
+
             font-size: 0.92rem;
-            line-height: 1.5;
+            line-height: 1.55;
         }
 
         .status-badge {
             margin-bottom: 22px;
-            padding: 12px 14px;
-            border: 1px solid var(--border-strong);
-            border-radius: 14px;
+            padding: 13px 14px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+
+            border:
+                1px solid
+                var(--border-strong);
+
+            border-radius:
+                var(--radius-small);
+
             color: var(--teal);
-            background: rgba(40,224,192,0.08);
+
+            background:
+                rgba(40, 224, 192, 0.08);
+
             font-size: 0.82rem;
             font-weight: 800;
+
             text-align: center;
             letter-spacing: 0.055em;
+
             text-transform: uppercase;
+
             position: relative;
             z-index: 1;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            flex: 0 0 auto;
+
+            border-radius: 50%;
+
+            background:
+                var(--teal);
+
+            box-shadow:
+                0 0 12px
+                rgba(40, 224, 192, 0.85);
         }
 
         .input-grid {
             display: grid;
             gap: 16px;
-            margin-bottom: 22px;
+
+            margin-bottom: 18px;
+
             position: relative;
             z-index: 1;
         }
 
         .input-group label {
             display: block;
+
             margin-bottom: 7px;
-            color: #DDE3E8;
+
+            color: #dde3e8;
+
             font-size: 0.88rem;
             font-weight: 650;
         }
 
-        .input-wrapper { position: relative; }
+        .input-wrapper {
+            position: relative;
+        }
 
         .input-wrapper input {
             width: 100%;
-            min-height: 54px;
-            padding: 12px 52px 12px 16px;
-            border: 1px solid rgba(255,255,255,0.11);
-            border-radius: 14px;
+            min-height: 58px;
+
+            padding:
+                12px
+                52px
+                12px
+                16px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.11);
+
+            border-radius:
+                var(--radius-small);
+
             outline: none;
+
             color: var(--text);
-            background: rgba(255,255,255,0.045);
-            font-size: 1.12rem;
-            font-weight: 750;
+
+            background:
+                rgba(255, 255, 255, 0.045);
+
+            font-size: 1.15rem;
+            font-weight: 780;
+
             text-align: center;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .input-wrapper input:hover {
+            border-color:
+                rgba(246, 215, 119, 0.30);
         }
 
         .input-wrapper input:focus {
-            border-color: var(--teal);
-            background: rgba(40,224,192,0.055);
-            box-shadow: 0 0 0 4px rgba(40,224,192,0.10);
+            border-color:
+                var(--teal);
+
+            background:
+                rgba(40, 224, 192, 0.055);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(40, 224, 192, 0.10);
         }
 
         .input-suffix {
             position: absolute;
             top: 50%;
             right: 17px;
-            transform: translateY(-50%);
-            color: var(--gold-light);
+
+            transform:
+                translateY(-50%);
+
+            color:
+                var(--gold-light);
+
             font-weight: 800;
+
             pointer-events: none;
         }
 
         .field-error {
             min-height: 18px;
+
             margin-top: 5px;
-            color: var(--danger);
+
+            color:
+                var(--danger);
+
             font-size: 0.76rem;
         }
 
-        .result-section {
-            padding: 22px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            background:
-                linear-gradient(145deg, rgba(217,170,69,0.075), rgba(40,224,192,0.045)),
-                var(--surface-light);
-            text-align: center;
+        .action-row {
+            margin:
+                0
+                0
+                24px;
+
+            display: flex;
+            justify-content: flex-end;
+
             position: relative;
             z-index: 1;
         }
 
-        .result-label {
-            margin-bottom: 7px;
-            color: var(--text-muted);
-            font-size: 0.76rem;
-            font-weight: 750;
-            letter-spacing: 0.075em;
+        .reset-button {
+            padding:
+                9px
+                14px;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.10);
+
+            border-radius:
+                999px;
+
+            color:
+                var(--text-muted);
+
+            background:
+                rgba(255, 255, 255, 0.035);
+
+            font-size: 0.78rem;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                color 0.2s ease,
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .reset-button:hover {
+            color:
+                var(--text);
+
+            border-color:
+                rgba(246, 215, 119, 0.32);
+
+            background:
+                rgba(246, 215, 119, 0.06);
+        }
+
+        .reset-button:active {
+            transform:
+                scale(0.97);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(0, 1fr)
+                );
+
+            gap: 14px;
+
+            margin-bottom: 18px;
+
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-card {
+            min-height: 175px;
+
+            padding: 20px 14px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius:
+                var(--radius-medium);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(217, 170, 69, 0.075),
+                    rgba(40, 224, 192, 0.045)
+                ),
+                var(--surface-light);
+
+            text-align: center;
+
+            box-shadow:
+                inset
+                0 1px 0
+                rgba(255, 255, 255, 0.025);
+        }
+
+        .result-card-label {
+            min-height: 34px;
+
+            margin-bottom: 10px;
+
+            display: flex;
+            align-items: center;
+
+            color:
+                var(--text-muted);
+
+            font-size: 0.70rem;
+            font-weight: 760;
+
+            line-height: 1.4;
+            letter-spacing: 0.07em;
+
             text-transform: uppercase;
         }
 
         .result-value {
-            margin-bottom: 5px;
-            color: var(--gold-light);
-            font-size: 2.5rem;
+            margin-bottom: 7px;
+
+            color:
+                var(--gold-light);
+
+            font-size:
+                clamp(
+                    2rem,
+                    8vw,
+                    2.55rem
+                );
+
             font-weight: 850;
             line-height: 1;
         }
 
         .result-sub {
-            color: var(--teal);
-            font-size: 1.08rem;
+            color:
+                var(--teal);
+
+            font-size: 0.98rem;
             font-weight: 750;
         }
 
-        .divider {
-            height: 1px;
-            margin: 20px 0;
-            background: linear-gradient(90deg, transparent, rgba(246,215,119,0.38), transparent);
+        .calculation-panel {
+            margin-bottom: 18px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.09);
+
+            border-radius:
+                var(--radius-medium);
+
+            overflow: hidden;
+
+            background:
+                rgba(255, 255, 255, 0.025);
+
+            position: relative;
+            z-index: 1;
+        }
+
+        .calculation-toggle {
+            width: 100%;
+
+            padding: 16px 18px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+
+            border: 0;
+
+            color:
+                var(--text);
+
+            background:
+                transparent;
+
+            font-size: 0.85rem;
+            font-weight: 740;
+
+            cursor: pointer;
+
+            text-align: left;
+        }
+
+        .toggle-icon {
+            color:
+                var(--gold-light);
+
+            font-size: 1rem;
+
+            transition:
+                transform 0.25s ease;
+        }
+
+        .calculation-panel.open
+        .toggle-icon {
+            transform:
+                rotate(180deg);
+        }
+
+        .calculation-content {
+            max-height: 0;
+
+            overflow: hidden;
+
+            opacity: 0;
+
+            transition:
+                max-height 0.35s ease,
+                opacity 0.25s ease;
+        }
+
+        .calculation-panel.open
+        .calculation-content {
+            max-height: 360px;
+            opacity: 1;
+        }
+
+        .calculation-inner {
+            padding:
+                0
+                18px
+                18px;
+        }
+
+        .formula-box {
+            padding: 15px;
+
+            border:
+                1px solid
+                rgba(40, 224, 192, 0.18);
+
+            border-radius:
+                var(--radius-small);
+
+            background:
+                rgba(40, 224, 192, 0.045);
+        }
+
+        .formula-row {
+            display: grid;
+            grid-template-columns:
+                1fr
+                auto;
+
+            gap: 12px;
+
+            padding:
+                8px
+                0;
+
+            color:
+                var(--text-muted);
+
+            font-size: 0.82rem;
+            line-height: 1.4;
+        }
+
+        .formula-row:not(:last-child) {
+            border-bottom:
+                1px solid
+                rgba(255, 255, 255, 0.06);
+        }
+
+        .formula-row strong {
+            color:
+                var(--text);
+
+            font-weight: 750;
+
+            text-align: right;
+        }
+
+        .formula-result {
+            color:
+                var(--teal) !important;
         }
 
         .explanation {
-            margin: 18px 0 0;
-            color: var(--text-muted);
+            margin:
+                0
+                0
+                20px;
+
+            color:
+                var(--text-muted);
+
             font-size: 0.78rem;
-            line-height: 1.5;
-            text-align: left;
+            line-height: 1.55;
+
             position: relative;
             z-index: 1;
         }
 
         .copyright {
-            margin-top: 24px;
-            color: #727D87;
+            color:
+                var(--text-dimmed);
+
             font-size: 0.72rem;
             text-align: center;
+
             position: relative;
             z-index: 1;
         }
 
-        .copyright strong { color: var(--gold); }
+        .copyright strong {
+            color:
+                var(--gold);
 
-        @media (max-width: 480px) {
+            font-weight: 650;
+        }
+
+        @media (
+            max-width: 480px
+        ) {
             body {
                 padding: 14px;
                 align-items: flex-start;
@@ -265,193 +735,922 @@
 
             .container {
                 margin-top: 8px;
-                padding: 22px 18px;
-                border-radius: 22px;
+
+                padding:
+                    22px
+                    18px;
+
+                border-radius:
+                    22px;
             }
 
-            .logo-button img { max-width: 285px; }
+            .brand-header img {
+                max-width:
+                    315px;
+            }
+        }
+
+        @media (
+            max-width: 365px
+        ) {
+            .results-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .result-card {
+                min-height:
+                    145px;
+            }
+        }
+
+        @media (
+            prefers-reduced-motion: reduce
+        ) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior:
+                    auto !important;
+
+                transition:
+                    none !important;
+
+                animation:
+                    none !important;
+            }
         }
     </style>
 </head>
+
 <body>
     <main class="container">
-        <button class="logo-button" type="button" id="resetButton" title="Nullstill kalkulatoren" aria-label="Nullstill kalkulatoren">
-            <img src="OctaCore_Horizontal_Dark.png" alt="OctaCore Sykemeldingskalkulator">
-        </button>
 
-        <section class="intro" aria-labelledby="pageTitle">
-            <h1 id="pageTitle">Sykemeldingskalkulator</h1>
-            <p>Beregn arbeidstid ut fra stillingsprosent og gradert sykmelding.</p>
+        <header class="brand-header">
+            <img
+                src="OctaCore_Horizontal_Dark.png"
+                alt="OctaCore Sykemeldingskalkulator"
+            >
+        </header>
+
+        <section
+            class="intro"
+            aria-labelledby="pageTitle"
+        >
+            <h1 id="pageTitle">
+                Sykemeldingskalkulator
+            </h1>
+
+            <p>
+                Enkel og presis beregning av arbeidstid
+                ved gradert sykmelding.
+            </p>
         </section>
 
-        <div id="status" class="status-badge" aria-live="polite">
-            Arbeidsandel etter sykmelding: 60 %
+        <div
+            id="status"
+            class="status-badge"
+            aria-live="polite"
+        >
+            <span class="status-dot"></span>
+
+            <span id="statusText">
+                Arbeidsandel etter sykmelding: 60 %
+            </span>
         </div>
 
-        <div class="input-grid">
+        <section
+            class="input-grid"
+            aria-label="Verdier for beregningen"
+        >
+
             <div class="input-group">
-                <label for="stilling">Stillingsstørrelse</label>
+                <label for="stilling">
+                    Stillingsstørrelse
+                </label>
+
                 <div class="input-wrapper">
-                    <input type="number" id="stilling" value="100" min="0" max="100" step="0.1" inputmode="decimal" autocomplete="off" aria-describedby="stillingError">
-                    <span class="input-suffix">%</span>
+                    <input
+                        type="number"
+                        id="stilling"
+                        value="100"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        inputmode="decimal"
+                        autocomplete="off"
+                        aria-describedby="stillingError"
+                    >
+
+                    <span class="input-suffix">
+                        %
+                    </span>
                 </div>
-                <div id="stillingError" class="field-error" aria-live="polite"></div>
+
+                <div
+                    id="stillingError"
+                    class="field-error"
+                    aria-live="polite"
+                ></div>
             </div>
 
             <div class="input-group">
-                <label for="sykemelding">Sykmeldingsgrad</label>
+                <label for="sykemelding">
+                    Sykmeldingsgrad
+                </label>
+
                 <div class="input-wrapper">
-                    <input type="number" id="sykemelding" value="40" min="0" max="100" step="0.1" inputmode="decimal" autocomplete="off" aria-describedby="sykemeldingError">
-                    <span class="input-suffix">%</span>
+                    <input
+                        type="number"
+                        id="sykemelding"
+                        value="40"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        inputmode="decimal"
+                        autocomplete="off"
+                        aria-describedby="sykemeldingError"
+                    >
+
+                    <span class="input-suffix">
+                        %
+                    </span>
                 </div>
-                <div id="sykemeldingError" class="field-error" aria-live="polite"></div>
+
+                <div
+                    id="sykemeldingError"
+                    class="field-error"
+                    aria-live="polite"
+                ></div>
             </div>
+
+        </section>
+
+        <div class="action-row">
+            <button
+                class="reset-button"
+                id="resetButton"
+                type="button"
+            >
+                <span aria-hidden="true">
+                    ↻
+                </span>
+
+                Nullstill
+            </button>
         </div>
 
-        <section class="result-section" aria-label="Beregnet arbeidstid">
-            <div class="main-result">
-                <div class="result-label">Timer å jobbe per uke</div>
-                <div id="resUke" class="result-value">22,50</div>
-                <div id="resUkeKlokke" class="result-sub">22 t 30 min</div>
-            </div>
+        <section
+            class="results-grid"
+            aria-label="Beregnet arbeidstid"
+        >
 
-            <div class="divider"></div>
+            <article class="result-card">
+                <div class="result-card-label">
+                    Timer å jobbe per uke
+                </div>
 
-            <div class="main-result">
-                <div class="result-label">Av en planlagt arbeidsdag på 7,5 timer</div>
-                <div id="resDag" class="result-value">4,50</div>
-                <div id="resDagKlokke" class="result-sub">4 t 30 min</div>
+                <div
+                    id="resUke"
+                    class="result-value"
+                >
+                    22,50
+                </div>
+
+                <div
+                    id="resUkeKlokke"
+                    class="result-sub"
+                >
+                    22 t 30 min
+                </div>
+            </article>
+
+            <article class="result-card">
+                <div class="result-card-label">
+                    Av en planlagt dag på 7,5 timer
+                </div>
+
+                <div
+                    id="resDag"
+                    class="result-value"
+                >
+                    4,50
+                </div>
+
+                <div
+                    id="resDagKlokke"
+                    class="result-sub"
+                >
+                    4 t 30 min
+                </div>
+            </article>
+
+        </section>
+
+        <section
+            id="calculationPanel"
+            class="calculation-panel"
+        >
+            <button
+                id="calculationToggle"
+                class="calculation-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="calculationContent"
+            >
+                <span>
+                    Hvordan ble dette regnet ut?
+                </span>
+
+                <span
+                    class="toggle-icon"
+                    aria-hidden="true"
+                >
+                    ▼
+                </span>
+            </button>
+
+            <div
+                id="calculationContent"
+                class="calculation-content"
+            >
+                <div class="calculation-inner">
+
+                    <div class="formula-box">
+
+                        <div class="formula-row">
+                            <span>
+                                Arbeidsandel
+                            </span>
+
+                            <strong id="formulaArbeidsandel">
+                                100 % − 40 % = 60 %
+                            </strong>
+                        </div>
+
+                        <div class="formula-row">
+                            <span>
+                                Samlet arbeidsprosent
+                            </span>
+
+                            <strong id="formulaSamlet">
+                                100 % × 60 % = 60 %
+                            </strong>
+                        </div>
+
+                        <div class="formula-row">
+                            <span>
+                                Ukentlig arbeidstid
+                            </span>
+
+                            <strong id="formulaUke">
+                                37,5 t × 60 % = 22,50 t
+                            </strong>
+                        </div>
+
+                        <div class="formula-row">
+                            <span>
+                                Arbeid av full dag
+                            </span>
+
+                            <strong
+                                id="formulaDag"
+                                class="formula-result"
+                            >
+                                7,5 t × 60 % = 4,50 t
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
         </section>
 
         <p class="explanation">
-            Ukesresultatet tar utgangspunkt i en heltidsuke på 37,5 timer.
-            Dagsresultatet viser hvor mye som skal arbeides av en opprinnelig planlagt dag på 7,5 timer.
+            Ukesresultatet tar utgangspunkt i en heltidsuke
+            på 37,5 timer. Dagsresultatet viser hvor mye som
+            skal arbeides av en opprinnelig planlagt arbeidsdag
+            på 7,5 timer.
         </p>
 
         <footer class="copyright">
-            &copy; <span id="year"></span> <strong>OctaCore</strong> · Utviklet av Thomas Nytveit
+            &copy;
+            <span id="year"></span>
+
+            <strong>
+                OctaCore
+            </strong>
+
+            · Utviklet av Thomas Nytveit
         </footer>
+
     </main>
 
     <script>
         const DEFAULT_STILLING = 100;
         const DEFAULT_SYKEMELDING = 40;
+
         const FULL_UKE = 37.5;
         const FULL_DAG = 7.5;
 
-        const elements = {
-            stilling: document.getElementById("stilling"),
-            sykemelding: document.getElementById("sykemelding"),
-            stillingError: document.getElementById("stillingError"),
-            sykemeldingError: document.getElementById("sykemeldingError"),
-            status: document.getElementById("status"),
-            resUke: document.getElementById("resUke"),
-            resUkeKlokke: document.getElementById("resUkeKlokke"),
-            resDag: document.getElementById("resDag"),
-            resDagKlokke: document.getElementById("resDagKlokke"),
-            resetButton: document.getElementById("resetButton"),
-            year: document.getElementById("year")
+        const STORAGE_KEYS = {
+            stilling:
+                "octacore-stilling",
+
+            sykemelding:
+                "octacore-sykemelding"
         };
 
-        elements.year.textContent = new Date().getFullYear();
+        const elements = {
+            stilling:
+                document.getElementById(
+                    "stilling"
+                ),
+
+            sykemelding:
+                document.getElementById(
+                    "sykemelding"
+                ),
+
+            stillingError:
+                document.getElementById(
+                    "stillingError"
+                ),
+
+            sykemeldingError:
+                document.getElementById(
+                    "sykemeldingError"
+                ),
+
+            statusText:
+                document.getElementById(
+                    "statusText"
+                ),
+
+            resUke:
+                document.getElementById(
+                    "resUke"
+                ),
+
+            resUkeKlokke:
+                document.getElementById(
+                    "resUkeKlokke"
+                ),
+
+            resDag:
+                document.getElementById(
+                    "resDag"
+                ),
+
+            resDagKlokke:
+                document.getElementById(
+                    "resDagKlokke"
+                ),
+
+            resetButton:
+                document.getElementById(
+                    "resetButton"
+                ),
+
+            year:
+                document.getElementById(
+                    "year"
+                ),
+
+            calculationPanel:
+                document.getElementById(
+                    "calculationPanel"
+                ),
+
+            calculationToggle:
+                document.getElementById(
+                    "calculationToggle"
+                ),
+
+            formulaArbeidsandel:
+                document.getElementById(
+                    "formulaArbeidsandel"
+                ),
+
+            formulaSamlet:
+                document.getElementById(
+                    "formulaSamlet"
+                ),
+
+            formulaUke:
+                document.getElementById(
+                    "formulaUke"
+                ),
+
+            formulaDag:
+                document.getElementById(
+                    "formulaDag"
+                )
+        };
+
+        elements.year.textContent =
+            new Date().getFullYear();
 
         function parsePercentage(value) {
-            const normalized = String(value).replace(",", ".");
-            const parsed = Number.parseFloat(normalized);
-            return Number.isFinite(parsed) ? parsed : 0;
+            const normalized =
+                String(value)
+                    .replace(",", ".");
+
+            const parsed =
+                Number.parseFloat(
+                    normalized
+                );
+
+            return Number.isFinite(parsed)
+                ? parsed
+                : 0;
         }
 
-        function clamp(value, min, max) {
-            return Math.min(max, Math.max(min, value));
+        function clamp(
+            value,
+            min,
+            max
+        ) {
+            return Math.min(
+                max,
+                Math.max(
+                    min,
+                    value
+                )
+            );
         }
 
-        function formatNumber(value) {
-            return value.toLocaleString("no-NO", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
+        function formatNumber(
+            value,
+            minimumFractionDigits = 2,
+            maximumFractionDigits = 2
+        ) {
+            return value.toLocaleString(
+                "no-NO",
+                {
+                    minimumFractionDigits,
+                    maximumFractionDigits
+                }
+            );
         }
 
-        function formatToTime(decimalHours) {
-            const totalMinutes = Math.round(Math.max(0, decimalHours) * 60);
-            const hours = Math.floor(totalMinutes / 60);
-            const minutes = totalMinutes % 60;
+        function formatPercentage(
+            value
+        ) {
+            return value.toLocaleString(
+                "no-NO",
+                {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 1
+                }
+            );
+        }
+
+        function formatToTime(
+            decimalHours
+        ) {
+            const totalMinutes =
+                Math.round(
+                    Math.max(
+                        0,
+                        decimalHours
+                    ) * 60
+                );
+
+            const hours =
+                Math.floor(
+                    totalMinutes / 60
+                );
+
+            const minutes =
+                totalMinutes % 60;
+
             return `${hours} t ${minutes} min`;
         }
 
-        function setValidationMessage(input, errorElement, rawValue) {
-            const value = parsePercentage(rawValue);
+        function setValidationMessage(
+            input,
+            errorElement,
+            rawValue
+        ) {
+            const value =
+                parsePercentage(
+                    rawValue
+                );
 
-            if (rawValue === "") {
-                errorElement.textContent = "Skriv inn en verdi mellom 0 og 100.";
-                input.setAttribute("aria-invalid", "true");
+            if (
+                rawValue === ""
+            ) {
+                errorElement.textContent =
+                    "Skriv inn en verdi mellom 0 og 100.";
+
+                input.setAttribute(
+                    "aria-invalid",
+                    "true"
+                );
+
                 return false;
             }
 
-            if (value < 0 || value > 100) {
-                errorElement.textContent = "Verdien må være mellom 0 og 100.";
-                input.setAttribute("aria-invalid", "true");
+            if (
+                value < 0 ||
+                value > 100
+            ) {
+                errorElement.textContent =
+                    "Verdien må være mellom 0 og 100.";
+
+                input.setAttribute(
+                    "aria-invalid",
+                    "true"
+                );
+
                 return false;
             }
 
-            errorElement.textContent = "";
-            input.removeAttribute("aria-invalid");
+            errorElement.textContent =
+                "";
+
+            input.removeAttribute(
+                "aria-invalid"
+            );
+
             return true;
         }
 
-        function calculate() {
-            const rawStilling = elements.stilling.value;
-            const rawSykemelding = elements.sykemelding.value;
+        function animateNumber(
+            element,
+            targetValue
+        ) {
+            const prefersReducedMotion =
+                window.matchMedia(
+                    "(prefers-reduced-motion: reduce)"
+                ).matches;
 
-            const stillingIsValid = setValidationMessage(elements.stilling, elements.stillingError, rawStilling);
-            const sykemeldingIsValid = setValidationMessage(elements.sykemelding, elements.sykemeldingError, rawSykemelding);
+            if (
+                prefersReducedMotion
+            ) {
+                element.textContent =
+                    formatNumber(
+                        targetValue
+                    );
 
-            const stilling = clamp(parsePercentage(rawStilling), 0, 100);
-            const sykemelding = clamp(parsePercentage(rawSykemelding), 0, 100);
-
-            const arbeidsandel = 100 - sykemelding;
-            const arbeidsfaktor = arbeidsandel / 100;
-            const stillingsfaktor = stilling / 100;
-
-            elements.status.textContent = `Arbeidsandel etter sykmelding: ${formatNumber(arbeidsandel).replace(",00", "")} %`;
-
-            if (!stillingIsValid || !sykemeldingIsValid) {
-                elements.resUke.textContent = "–";
-                elements.resUkeKlokke.textContent = "Kontroller verdiene";
-                elements.resDag.textContent = "–";
-                elements.resDagKlokke.textContent = "Kontroller verdiene";
                 return;
             }
 
-            const timerUke = stillingsfaktor * arbeidsfaktor * FULL_UKE;
-            const timerDag = arbeidsfaktor * FULL_DAG;
+            const currentValue =
+                parsePercentage(
+                    element.textContent
+                        .replace(
+                            /\s/g,
+                            ""
+                        )
+                );
 
-            elements.resUke.textContent = formatNumber(timerUke);
-            elements.resUkeKlokke.textContent = formatToTime(timerUke);
-            elements.resDag.textContent = formatNumber(timerDag);
-            elements.resDagKlokke.textContent = formatToTime(timerDag);
+            const startValue =
+                Number.isFinite(
+                    currentValue
+                )
+                    ? currentValue
+                    : 0;
+
+            const duration =
+                280;
+
+            const startTime =
+                performance.now();
+
+            function update(
+                currentTime
+            ) {
+                const progress =
+                    Math.min(
+                        (
+                            currentTime -
+                            startTime
+                        ) / duration,
+                        1
+                    );
+
+                const easedProgress =
+                    1 -
+                    Math.pow(
+                        1 - progress,
+                        3
+                    );
+
+                const value =
+                    startValue +
+                    (
+                        targetValue -
+                        startValue
+                    ) *
+                    easedProgress;
+
+                element.textContent =
+                    formatNumber(
+                        value
+                    );
+
+                if (
+                    progress < 1
+                ) {
+                    requestAnimationFrame(
+                        update
+                    );
+                }
+            }
+
+            requestAnimationFrame(
+                update
+            );
+        }
+
+        function saveValues() {
+            localStorage.setItem(
+                STORAGE_KEYS.stilling,
+                elements.stilling.value
+            );
+
+            localStorage.setItem(
+                STORAGE_KEYS.sykemelding,
+                elements.sykemelding.value
+            );
+        }
+
+        function loadSavedValues() {
+            const savedStilling =
+                localStorage.getItem(
+                    STORAGE_KEYS.stilling
+                );
+
+            const savedSykemelding =
+                localStorage.getItem(
+                    STORAGE_KEYS.sykemelding
+                );
+
+            if (
+                savedStilling !== null
+            ) {
+                elements.stilling.value =
+                    savedStilling;
+            }
+
+            if (
+                savedSykemelding !== null
+            ) {
+                elements.sykemelding.value =
+                    savedSykemelding;
+            }
+        }
+
+        function updateFormula(
+            stilling,
+            sykemelding,
+            arbeidsandel,
+            samletArbeidsprosent,
+            timerUke,
+            timerDag
+        ) {
+            elements.formulaArbeidsandel.textContent =
+                `100 % − ${formatPercentage(
+                    sykemelding
+                )} % = ${formatPercentage(
+                    arbeidsandel
+                )} %`;
+
+            elements.formulaSamlet.textContent =
+                `${formatPercentage(
+                    stilling
+                )} % × ${formatPercentage(
+                    arbeidsandel
+                )} % = ${formatPercentage(
+                    samletArbeidsprosent
+                )} %`;
+
+            elements.formulaUke.textContent =
+                `37,5 t × ${formatPercentage(
+                    samletArbeidsprosent
+                )} % = ${formatNumber(
+                    timerUke
+                )} t`;
+
+            elements.formulaDag.textContent =
+                `7,5 t × ${formatPercentage(
+                    arbeidsandel
+                )} % = ${formatNumber(
+                    timerDag
+                )} t`;
+        }
+
+        function showInvalidResults() {
+            elements.resUke.textContent =
+                "–";
+
+            elements.resUkeKlokke.textContent =
+                "Kontroller verdiene";
+
+            elements.resDag.textContent =
+                "–";
+
+            elements.resDagKlokke.textContent =
+                "Kontroller verdiene";
+        }
+
+        function calculate() {
+            const rawStilling =
+                elements.stilling.value;
+
+            const rawSykemelding =
+                elements.sykemelding.value;
+
+            const stillingIsValid =
+                setValidationMessage(
+                    elements.stilling,
+                    elements.stillingError,
+                    rawStilling
+                );
+
+            const sykemeldingIsValid =
+                setValidationMessage(
+                    elements.sykemelding,
+                    elements.sykemeldingError,
+                    rawSykemelding
+                );
+
+            const stilling =
+                clamp(
+                    parsePercentage(
+                        rawStilling
+                    ),
+                    0,
+                    100
+                );
+
+            const sykemelding =
+                clamp(
+                    parsePercentage(
+                        rawSykemelding
+                    ),
+                    0,
+                    100
+                );
+
+            const arbeidsandel =
+                100 -
+                sykemelding;
+
+            const arbeidsfaktor =
+                arbeidsandel /
+                100;
+
+            const stillingsfaktor =
+                stilling /
+                100;
+
+            const samletArbeidsprosent =
+                stilling *
+                arbeidsfaktor;
+
+            elements.statusText.textContent =
+                `Arbeidsandel etter sykmelding: ${formatPercentage(
+                    arbeidsandel
+                )} %`;
+
+            if (
+                !stillingIsValid ||
+                !sykemeldingIsValid
+            ) {
+                showInvalidResults();
+                return;
+            }
+
+            const timerUke =
+                stillingsfaktor *
+                arbeidsfaktor *
+                FULL_UKE;
+
+            const timerDag =
+                arbeidsfaktor *
+                FULL_DAG;
+
+            animateNumber(
+                elements.resUke,
+                timerUke
+            );
+
+            elements.resUkeKlokke.textContent =
+                formatToTime(
+                    timerUke
+                );
+
+            animateNumber(
+                elements.resDag,
+                timerDag
+            );
+
+            elements.resDagKlokke.textContent =
+                formatToTime(
+                    timerDag
+                );
+
+            updateFormula(
+                stilling,
+                sykemelding,
+                arbeidsandel,
+                samletArbeidsprosent,
+                timerUke,
+                timerDag
+            );
+
+            saveValues();
         }
 
         function resetCalculator() {
-            elements.stilling.value = DEFAULT_STILLING;
-            elements.sykemelding.value = DEFAULT_SYKEMELDING;
+            elements.stilling.value =
+                DEFAULT_STILLING;
+
+            elements.sykemelding.value =
+                DEFAULT_SYKEMELDING;
+
+            localStorage.removeItem(
+                STORAGE_KEYS.stilling
+            );
+
+            localStorage.removeItem(
+                STORAGE_KEYS.sykemelding
+            );
+
             calculate();
+
             elements.stilling.focus();
         }
 
-        elements.stilling.addEventListener("input", calculate);
-        elements.sykemelding.addEventListener("input", calculate);
-        elements.resetButton.addEventListener("click", resetCalculator);
+        function toggleCalculation() {
+            const isOpen =
+                elements.calculationPanel
+                    .classList
+                    .toggle(
+                        "open"
+                    );
 
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", () => {
-                navigator.serviceWorker
-                    .register("./service-worker.js")
-                    .catch(error => console.error("Service worker kunne ikke registreres:", error));
-            });
+            elements.calculationToggle
+                .setAttribute(
+                    "aria-expanded",
+                    String(
+                        isOpen
+                    )
+                );
         }
 
+        elements.stilling
+            .addEventListener(
+                "input",
+                calculate
+            );
+
+        elements.sykemelding
+            .addEventListener(
+                "input",
+                calculate
+            );
+
+        elements.resetButton
+            .addEventListener(
+                "click",
+                resetCalculator
+            );
+
+        elements.calculationToggle
+            .addEventListener(
+                "click",
+                toggleCalculation
+            );
+
+        if (
+            "serviceWorker" in navigator
+        ) {
+            window.addEventListener(
+                "load",
+                () => {
+                    navigator
+                        .serviceWorker
+                        .register(
+                            "./service-worker.js"
+                        )
+                        .catch(
+                            error => {
+                                console.error(
+                                    "Service worker kunne ikke registreres:",
+                                    error
+                                );
+                            }
+                        );
+                }
+            );
+        }
+
+        loadSavedValues();
         calculate();
     </script>
 </body>
