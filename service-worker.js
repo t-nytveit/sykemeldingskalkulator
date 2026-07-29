@@ -1,12 +1,12 @@
 const CACHE_NAME =
-    "octacore-sykemeldingskalkulator-v2";
+    "octacore-sykemeldingskalkulator-v3";
 
 const APP_ASSETS = [
     "./",
     "./index.html",
     "./manifest.json",
 
-    "./OctaCore_Horizontal_Dark.png",
+    "./OctaCore_Core_Symbol_Transparent.svg",
 
     "./favicon.ico",
     "./favicon-16.png",
@@ -81,59 +81,54 @@ self.addEventListener(
         }
 
         event.respondWith(
-            caches
-                .match(
-                    event.request
-                )
+            fetch(
+                event.request
+            )
                 .then(
-                    cachedResponse => {
-                        const networkFetch =
-                            fetch(
+                    networkResponse => {
+                        if (
+                            !networkResponse ||
+                            networkResponse.status !==
+                                200
+                        ) {
+                            return networkResponse;
+                        }
+
+                        const responseToCache =
+                            networkResponse.clone();
+
+                        caches
+                            .open(
+                                CACHE_NAME
+                            )
+                            .then(
+                                cache => {
+                                    cache.put(
+                                        event.request,
+                                        responseToCache
+                                    );
+                                }
+                            );
+
+                        return networkResponse;
+                    }
+                )
+                .catch(
+                    () => {
+                        return caches
+                            .match(
                                 event.request
                             )
-                                .then(
-                                    networkResponse => {
-                                        if (
-                                            !networkResponse ||
-                                            networkResponse.status !==
-                                                200 ||
-                                            networkResponse.type ===
-                                                "opaque"
-                                        ) {
-                                            return networkResponse;
-                                        }
-
-                                        const responseToCache =
-                                            networkResponse.clone();
-
-                                        caches
-                                            .open(
-                                                CACHE_NAME
-                                            )
-                                            .then(
-                                                cache => {
-                                                    cache.put(
-                                                        event.request,
-                                                        responseToCache
-                                                    );
-                                                }
-                                            );
-
-                                        return networkResponse;
-                                    }
-                                )
-                                .catch(
-                                    () =>
+                            .then(
+                                cachedResponse => {
+                                    return (
                                         cachedResponse ||
                                         caches.match(
                                             "./index.html"
                                         )
-                                );
-
-                        return (
-                            cachedResponse ||
-                            networkFetch
-                        );
+                                    );
+                                }
+                            );
                     }
                 )
         );
