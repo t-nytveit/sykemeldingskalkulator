@@ -452,28 +452,27 @@
             margin-bottom: 22px;
 
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
 
             position: relative;
             z-index: 1;
         }
 
-        .reset-button {
-            padding: 9px 14px;
+        .action-button {
+            min-height: 40px;
+            padding: 9px 15px;
 
             display: inline-flex;
+            justify-content: center;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
 
-            border: 1px solid var(--border-soft);
             border-radius: 999px;
 
-            color: var(--text-muted);
-
-            background: rgba(255, 255, 255, 0.03);
-
             font-size: 0.77rem;
-            font-weight: 720;
+            font-weight: 740;
 
             cursor: pointer;
 
@@ -481,17 +480,56 @@
                 color 0.2s ease,
                 border-color 0.2s ease,
                 background 0.2s ease,
+                box-shadow 0.2s ease,
                 transform 0.2s ease;
+        }
+
+        .action-button:active {
+            transform: scale(0.97);
+        }
+
+        .share-button {
+            border: 1px solid var(--border-teal);
+
+            color: #07110f;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--teal),
+                    #20cbb0
+                );
+
+            box-shadow:
+                0 8px 24px rgba(40, 224, 192, 0.16);
+        }
+
+        .share-button:hover {
+            background:
+                linear-gradient(
+                    135deg,
+                    #4aecd0,
+                    var(--teal)
+                );
+
+            box-shadow:
+                0 10px 28px rgba(40, 224, 192, 0.22);
+        }
+
+        .reset-button {
+            border: 1px solid var(--border-soft);
+
+            color: var(--text-muted);
+
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .reset-button:hover {
             color: var(--text);
-            border-color: rgba(246, 215, 119, 0.35);
-            background: rgba(246, 215, 119, 0.06);
-        }
 
-        .reset-button:active {
-            transform: scale(0.97);
+            border-color: rgba(246, 215, 119, 0.35);
+
+            background: rgba(246, 215, 119, 0.06);
         }
 
         .results-grid {
@@ -713,6 +751,53 @@
             font-weight: 680;
         }
 
+        .toast {
+            max-width: calc(100% - 36px);
+            padding: 11px 16px;
+
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            z-index: 1000;
+
+            transform:
+                translate(-50%, 24px);
+
+            border: 1px solid var(--border-teal);
+            border-radius: 999px;
+
+            color: var(--text);
+
+            background:
+                rgba(13, 25, 23, 0.96);
+
+            box-shadow:
+                0 14px 40px rgba(0, 0, 0, 0.45),
+                0 0 24px rgba(40, 224, 192, 0.10);
+
+            font-size: 0.8rem;
+            font-weight: 720;
+            text-align: center;
+
+            opacity: 0;
+            visibility: hidden;
+
+            pointer-events: none;
+
+            transition:
+                opacity 0.22s ease,
+                transform 0.22s ease,
+                visibility 0.22s ease;
+        }
+
+        .toast.visible {
+            transform:
+                translate(-50%, 0);
+
+            opacity: 1;
+            visibility: visible;
+        }
+
         @media (max-width: 480px) {
             body {
                 padding: 12px;
@@ -759,6 +844,23 @@
             .percentage-value {
                 padding-left: 15px;
                 text-align: left;
+            }
+
+            .action-row {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .action-button {
+                width: 100%;
+            }
+
+            .share-button {
+                order: 1;
+            }
+
+            .reset-button {
+                order: 2;
             }
         }
 
@@ -939,8 +1041,20 @@
 
         <div class="action-row">
             <button
+                id="shareButton"
+                class="action-button share-button"
+                type="button"
+            >
+                <span aria-hidden="true">
+                    ↗
+                </span>
+
+                Del resultat
+            </button>
+
+            <button
                 id="resetButton"
-                class="reset-button"
+                class="action-button reset-button"
                 type="button"
             >
                 <span aria-hidden="true">
@@ -976,10 +1090,7 @@
             </article>
 
             <article class="result-card">
-                <div
-                    id="dailyResultLabel"
-                    class="result-label"
-                >
+                <div class="result-label">
                     Ved fem arbeidsdager
                 </div>
 
@@ -1097,6 +1208,15 @@
 
     </main>
 
+    <div
+        id="toast"
+        class="toast"
+        role="status"
+        aria-live="polite"
+    >
+        Resultatet er kopiert
+    </div>
+
     <script>
         const DEFAULT_VALUES = {
             positionPercentage: 80,
@@ -1113,6 +1233,19 @@
 
             fullWeekHours:
                 "octacore-full-week-hours"
+        };
+
+        let toastTimeout = null;
+
+        let currentCalculation = {
+            isValid: true,
+            positionPercentage: 80,
+            sickLeavePercentage: 60,
+            fullWeekHours: 37.5,
+            workSharePercentage: 40,
+            fullPositionPercentage: 32,
+            weeklyHours: 12,
+            dailyHours: 2.4
         };
 
         const elements = {
@@ -1171,6 +1304,11 @@
                     "dailyTime"
                 ),
 
+            shareButton:
+                document.getElementById(
+                    "shareButton"
+                ),
+
             resetButton:
                 document.getElementById(
                     "resetButton"
@@ -1204,6 +1342,11 @@
             formulaDay:
                 document.getElementById(
                     "formulaDay"
+                ),
+
+            toast:
+                document.getElementById(
+                    "toast"
                 ),
 
             year:
@@ -1469,10 +1612,12 @@
 
         function showInvalidResults() {
             elements.weeklyResult.textContent = "–";
+
             elements.weeklyTime.textContent =
                 "Kontroller verdiene";
 
             elements.dailyResult.textContent = "–";
+
             elements.dailyTime.textContent =
                 "Kontroller verdiene";
         }
@@ -1588,7 +1733,10 @@
                 !positionIsValid ||
                 !sickLeaveIsValid
             ) {
+                currentCalculation.isValid = false;
+
                 showInvalidResults();
+
                 return;
             }
 
@@ -1602,6 +1750,17 @@
             const dailyHours =
                 weeklyHours /
                 5;
+
+            currentCalculation = {
+                isValid: true,
+                positionPercentage,
+                sickLeavePercentage,
+                fullWeekHours,
+                workSharePercentage,
+                fullPositionPercentage,
+                weeklyHours,
+                dailyHours
+            };
 
             animateNumber(
                 elements.weeklyResult,
@@ -1636,6 +1795,208 @@
             saveValues();
         }
 
+        function buildShareText() {
+            const calculation =
+                currentCalculation;
+
+            return [
+                "OctaCore Sykemeldingskalkulator",
+                "",
+                `Stillingsstørrelse: ${formatPercentage(
+                    calculation.positionPercentage
+                )} %`,
+
+                `Sykmeldingsgrad: ${formatPercentage(
+                    calculation.sickLeavePercentage
+                )} %`,
+
+                `Arbeidsandel av egen stilling: ${formatPercentage(
+                    calculation.workSharePercentage
+                )} %`,
+
+                `Tilsvarer av full stilling: ${formatPercentage(
+                    calculation.fullPositionPercentage
+                )} %`,
+
+                `Full arbeidsuke: ${formatHours(
+                    calculation.fullWeekHours
+                )} timer`,
+
+                `Arbeidstid per uke: ${formatTime(
+                    calculation.weeklyHours
+                )}`,
+
+                `Gjennomsnitt per arbeidsdag ved fem dager: ${formatTime(
+                    calculation.dailyHours
+                )}`,
+
+                "",
+                "Dagsresultatet er et gjennomsnitt. Den faktiske fordelingen må avtales mellom arbeidsgiver og arbeidstaker."
+            ].join("\n");
+        }
+
+        function showToast(message) {
+            elements.toast.textContent =
+                message;
+
+            elements.toast
+                .classList
+                .add("visible");
+
+            if (toastTimeout !== null) {
+                clearTimeout(
+                    toastTimeout
+                );
+            }
+
+            toastTimeout =
+                window.setTimeout(
+                    () => {
+                        elements.toast
+                            .classList
+                            .remove("visible");
+                    },
+                    2600
+                );
+        }
+
+        async function copyText(text) {
+            if (
+                navigator.clipboard &&
+                window.isSecureContext
+            ) {
+                await navigator.clipboard.writeText(
+                    text
+                );
+
+                return;
+            }
+
+            const textArea =
+                document.createElement(
+                    "textarea"
+                );
+
+            textArea.value = text;
+
+            textArea.setAttribute(
+                "readonly",
+                ""
+            );
+
+            textArea.style.position =
+                "fixed";
+
+            textArea.style.left =
+                "-9999px";
+
+            textArea.style.opacity =
+                "0";
+
+            document.body.appendChild(
+                textArea
+            );
+
+            textArea.select();
+
+            const copySucceeded =
+                document.execCommand(
+                    "copy"
+                );
+
+            document.body.removeChild(
+                textArea
+            );
+
+            if (!copySucceeded) {
+                throw new Error(
+                    "Kopiering mislyktes."
+                );
+            }
+        }
+
+        async function shareResult() {
+            if (
+                !currentCalculation.isValid
+            ) {
+                showToast(
+                    "Kontroller verdiene før du deler"
+                );
+
+                return;
+            }
+
+            const shareText =
+                buildShareText();
+
+            const shareData = {
+                title:
+                    "OctaCore Sykemeldingskalkulator",
+
+                text:
+                    shareText
+            };
+
+            try {
+                if (navigator.share) {
+                    await navigator.share(
+                        shareData
+                    );
+
+                    if (navigator.vibrate) {
+                        navigator.vibrate(25);
+                    }
+
+                    showToast(
+                        "Resultatet ble delt"
+                    );
+
+                    return;
+                }
+
+                await copyText(
+                    shareText
+                );
+
+                if (navigator.vibrate) {
+                    navigator.vibrate(25);
+                }
+
+                showToast(
+                    "Resultatet er kopiert"
+                );
+            } catch (error) {
+                if (
+                    error &&
+                    error.name ===
+                        "AbortError"
+                ) {
+                    return;
+                }
+
+                try {
+                    await copyText(
+                        shareText
+                    );
+
+                    showToast(
+                        "Resultatet er kopiert"
+                    );
+                } catch (
+                    copyError
+                ) {
+                    console.error(
+                        "Resultatet kunne ikke deles:",
+                        copyError
+                    );
+
+                    showToast(
+                        "Kunne ikke dele resultatet"
+                    );
+                }
+            }
+        }
+
         function resetCalculator() {
             elements.positionPercentage.value =
                 DEFAULT_VALUES.positionPercentage;
@@ -1652,12 +2013,18 @@
                 .values(STORAGE_KEYS)
                 .forEach(
                     key =>
-                        localStorage.removeItem(key)
+                        localStorage.removeItem(
+                            key
+                        )
                 );
 
             calculate();
 
             elements.positionPercentage.focus();
+
+            showToast(
+                "Kalkulatoren er nullstilt"
+            );
         }
 
         function toggleCalculation() {
@@ -1694,6 +2061,13 @@
             .addEventListener(
                 "change",
                 calculate
+            );
+
+        elements
+            .shareButton
+            .addEventListener(
+                "click",
+                shareResult
             );
 
         elements
