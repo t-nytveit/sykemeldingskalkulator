@@ -1,20 +1,25 @@
 {
-  "name": "KIWI Timekalkulator",
-  "short_name": "Timekalk",
-  "start_url": ".",
+  "name": "OctaCore Sykemeldingskalkulator",
+  "short_name": "Sykekalk",
+  "description": "Beregn arbeidstid ved gradert sykmelding.",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#18961e",
+  "orientation": "portrait-primary",
+  "background_color": "#080A0C",
+  "theme_color": "#0B0D0F",
   "icons": [
     {
-      "src": "k_icon.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "k_icon.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
