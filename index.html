@@ -189,19 +189,63 @@
         }
 
         .brand-header {
-            margin-bottom: 20px;
+            margin-bottom: 26px;
 
             position: relative;
             z-index: 1;
         }
 
-        .brand-header img {
-            width: 100%;
-            max-width: 355px;
-            height: auto;
+        .brand-lockup {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-symbol {
+            width: 88px;
+            height: 88px;
 
             display: block;
-            margin: 0 auto;
+            flex: 0 0 auto;
+        }
+
+        .brand-text {
+            min-width: 0;
+        }
+
+        .brand-name {
+            font-size: 1.68rem;
+            font-weight: 540;
+            line-height: 1;
+
+            letter-spacing: 0.20em;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--gold-light) 0%,
+                    var(--gold) 48%,
+                    var(--teal) 100%
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .brand-product {
+            margin-top: 8px;
+
+            color: var(--text-muted);
+
+            font-size: 0.66rem;
+            font-weight: 650;
+            line-height: 1.2;
+
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
         }
 
         .intro {
@@ -218,15 +262,15 @@
 
             font-size:
                 clamp(
-                    1.2rem,
-                    5vw,
-                    1.55rem
+                    1.1rem,
+                    4.8vw,
+                    1.42rem
                 );
 
-            font-weight: 760;
+            font-weight: 700;
             line-height: 1.15;
 
-            letter-spacing: 0.07em;
+            letter-spacing: 0.06em;
 
             text-transform: uppercase;
         }
@@ -244,7 +288,7 @@
 
         .status-badge {
             margin-bottom: 22px;
-            padding: 13px 14px;
+            padding: 11px 14px;
 
             display: flex;
             justify-content: center;
@@ -256,18 +300,18 @@
                 var(--border-strong);
 
             border-radius:
-                var(--radius-small);
+                12px;
 
             color: var(--teal);
 
             background:
-                rgba(40, 224, 192, 0.08);
+                rgba(40, 224, 192, 0.07);
 
-            font-size: 0.82rem;
-            font-weight: 800;
+            font-size: 0.77rem;
+            font-weight: 760;
 
             text-align: center;
-            letter-spacing: 0.055em;
+            letter-spacing: 0.045em;
 
             text-transform: uppercase;
 
@@ -744,9 +788,23 @@
                     22px;
             }
 
-            .brand-header img {
-                max-width:
-                    315px;
+            .brand-lockup {
+                gap: 12px;
+            }
+
+            .brand-symbol {
+                width: 72px;
+                height: 72px;
+            }
+
+            .brand-name {
+                font-size: 1.38rem;
+                letter-spacing: 0.16em;
+            }
+
+            .brand-product {
+                font-size: 0.57rem;
+                letter-spacing: 0.13em;
             }
         }
 
@@ -787,10 +845,26 @@
     <main class="container">
 
         <header class="brand-header">
-            <img
-                src="OctaCore_Horizontal_Dark.png"
-                alt="OctaCore Sykemeldingskalkulator"
-            >
+            <div class="brand-lockup">
+
+                <img
+                    class="brand-symbol"
+                    src="OctaCore_Core_Symbol_Transparent.svg"
+                    alt=""
+                    aria-hidden="true"
+                >
+
+                <div class="brand-text">
+                    <div class="brand-name">
+                        OCTACORE
+                    </div>
+
+                    <div class="brand-product">
+                        Sykemeldingskalkulator
+                    </div>
+                </div>
+
+            </div>
         </header>
 
         <section
@@ -798,12 +872,12 @@
             aria-labelledby="pageTitle"
         >
             <h1 id="pageTitle">
-                Sykemeldingskalkulator
+                Arbeidstid ved gradert sykmelding
             </h1>
 
             <p>
                 Enkel og presis beregning av arbeidstid
-                ved gradert sykmelding.
+                basert på stillingsprosent og sykmeldingsgrad.
             </p>
         </section>
 
