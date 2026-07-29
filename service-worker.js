@@ -1,5 +1,5 @@
 const CACHE_NAME =
-    "octacore-sykemeldingskalkulator-v5";
+    "octacore-sykemeldingskalkulator-v6";
 
 const APP_ASSETS = [
     "./",
@@ -100,9 +100,7 @@ self.addEventListener(
                             networkResponse.clone();
 
                         caches
-                            .open(
-                                CACHE_NAME
-                            )
+                            .open(CACHE_NAME)
                             .then(
                                 cache =>
                                     cache.put(
