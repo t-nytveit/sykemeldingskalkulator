@@ -885,6 +885,56 @@
             z-index: 1;
         }
 
+        .more-area {
+            margin-bottom: 18px;
+
+            display: flex;
+            justify-content: center;
+
+            position: relative;
+            z-index: 1;
+        }
+
+        .more-button {
+            min-height: 42px;
+            padding: 9px 18px;
+
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+
+            border: 1px solid var(--border-soft);
+            border-radius: 999px;
+
+            color: var(--text-muted);
+
+            background: rgba(255, 255, 255, 0.03);
+
+            font-size: 0.78rem;
+            font-weight: 740;
+
+            cursor: pointer;
+
+            transition:
+                color 0.2s ease,
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .more-button:hover {
+            color: var(--text);
+
+            border-color: rgba(246, 215, 119, 0.35);
+
+            background: rgba(246, 215, 119, 0.06);
+        }
+
+        .more-button:active {
+            transform: scale(0.97);
+        }
+
         .copyright {
             color: var(--text-dimmed);
 
@@ -1612,6 +1662,20 @@
             Den faktiske fordelingen må avtales mellom
             arbeidsgiver og arbeidstaker.
         </p>
+
+        <div class="more-area">
+            <button
+                id="moreButton"
+                class="more-button"
+                type="button"
+            >
+                <span aria-hidden="true">
+                    ⋯
+                </span>
+
+                Mer
+            </button>
+        </div>
 
         <footer class="copyright">
             &copy;
