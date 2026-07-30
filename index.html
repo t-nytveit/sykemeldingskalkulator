@@ -1051,6 +1051,322 @@
             cursor: pointer;
         }
 
+        .menu-product-version {
+            margin: 7px 0 0;
+            padding-top: 9px;
+
+            border-top: 1px solid rgba(217, 170, 69, 0.34);
+
+            color: var(--gold-light);
+
+            font-size: 0.65rem;
+            font-weight: 760;
+            letter-spacing: 0.04em;
+        }
+
+        .about-backdrop {
+            padding: 18px;
+
+            position: fixed;
+            inset: 0;
+            z-index: 1080;
+
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+
+            background: rgba(0, 0, 0, 0.76);
+
+            backdrop-filter: blur(11px);
+            -webkit-backdrop-filter: blur(11px);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition:
+                opacity 0.25s ease,
+                visibility 0.25s ease;
+        }
+
+        .about-backdrop.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .about-sheet {
+            width: 100%;
+            max-width: 430px;
+            max-height: min(88vh, 760px);
+            overflow-y: auto;
+            padding: 12px 18px 22px;
+
+            border: 1px solid var(--border);
+            border-radius: 26px 26px 20px 20px;
+
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(217, 170, 69, 0.11),
+                    transparent 31%
+                ),
+                radial-gradient(
+                    circle at 86% 18%,
+                    rgba(40, 224, 192, 0.07),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    150deg,
+                    rgba(27, 32, 37, 0.997),
+                    rgba(12, 16, 20, 0.997)
+                );
+
+            box-shadow:
+                0 34px 100px rgba(0, 0, 0, 0.72);
+
+            transform: translateY(38px);
+
+            transition: transform 0.25s ease;
+
+            scrollbar-width: thin;
+        }
+
+        .about-backdrop.visible .about-sheet {
+            transform: translateY(0);
+        }
+
+        .about-topbar {
+            margin-bottom: 8px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .about-back-button,
+        .about-close-button {
+            min-width: 38px;
+            height: 38px;
+            padding: 0 11px;
+
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+
+            border: 1px solid var(--border-soft);
+            border-radius: 999px;
+
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.035);
+
+            font: inherit;
+            font-size: 0.72rem;
+            font-weight: 720;
+
+            cursor: pointer;
+        }
+
+        .about-close-button {
+            width: 38px;
+            padding: 0;
+
+            font-size: 1rem;
+        }
+
+        .about-hero {
+            padding: 8px 0 20px;
+
+            text-align: center;
+        }
+
+        .about-logo {
+            width: 82px;
+            height: 82px;
+
+            display: block;
+            margin: 0 auto 10px;
+        }
+
+        .about-brand {
+            margin: 0;
+
+            font-size: 1.24rem;
+            font-weight: 650;
+            letter-spacing: 0.20em;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--gold-light),
+                    var(--gold) 52%,
+                    var(--teal)
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .about-product {
+            margin: 8px 0 0;
+
+            color: var(--text);
+
+            font-size: 0.93rem;
+            font-weight: 810;
+        }
+
+        .about-version {
+            margin: 6px 0 0;
+
+            color: var(--gold-light);
+
+            font-size: 0.66rem;
+            font-weight: 750;
+            letter-spacing: 0.05em;
+        }
+
+        .about-divider {
+            width: 82px;
+            height: 1px;
+            margin: 17px auto 0;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--gold),
+                    transparent
+                );
+        }
+
+        .about-content {
+            display: grid;
+            gap: 12px;
+        }
+
+        .about-card {
+            padding: 16px;
+
+            border: 1px solid var(--border-soft);
+            border-radius: 17px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255, 255, 255, 0.037),
+                    rgba(255, 255, 255, 0.016)
+                );
+        }
+
+        .about-card-highlight {
+            border-color: rgba(217, 170, 69, 0.25);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(217, 170, 69, 0.065),
+                    rgba(40, 224, 192, 0.025)
+                );
+        }
+
+        .about-card h3 {
+            margin: 0 0 9px;
+
+            color: var(--text);
+
+            font-size: 0.84rem;
+            font-weight: 820;
+        }
+
+        .about-card p {
+            margin: 0;
+
+            color: var(--text-muted);
+
+            font-size: 0.73rem;
+            line-height: 1.62;
+        }
+
+        .about-card p + p {
+            margin-top: 10px;
+        }
+
+        .about-feature-list {
+            margin: 12px 0 0;
+            padding: 0;
+
+            display: grid;
+            gap: 8px;
+
+            list-style: none;
+        }
+
+        .about-feature-list li {
+            display: grid;
+            grid-template-columns: 24px 1fr;
+            gap: 9px;
+            align-items: start;
+
+            color: var(--text-muted);
+
+            font-size: 0.72rem;
+            line-height: 1.45;
+        }
+
+        .about-feature-icon {
+            width: 24px;
+            height: 24px;
+
+            display: grid;
+            place-items: center;
+
+            border: 1px solid rgba(40, 224, 192, 0.22);
+            border-radius: 8px;
+
+            color: var(--teal);
+            background: rgba(40, 224, 192, 0.055);
+
+            font-size: 0.67rem;
+            font-weight: 850;
+        }
+
+        .about-founder {
+            margin-top: 13px;
+            padding-top: 13px;
+
+            border-top: 1px solid rgba(255, 255, 255, 0.075);
+        }
+
+        .about-founder strong {
+            display: block;
+
+            color: var(--gold-light);
+
+            font-size: 0.74rem;
+            line-height: 1.55;
+        }
+
+        .about-founder span {
+            display: block;
+
+            color: var(--text-muted);
+
+            font-size: 0.70rem;
+            line-height: 1.5;
+        }
+
+        .about-note {
+            margin: 3px 2px 0;
+
+            color: var(--text-dimmed);
+
+            font-size: 0.64rem;
+            line-height: 1.5;
+            text-align: center;
+        }
+
         .menu-list {
             display: grid;
             gap: 10px;
@@ -1907,7 +2223,7 @@
                 OctaCore
             </strong>
 
-            · Utviklet av Thomas Nytveit
+            · Utviklet av OctaCore
         </footer>
 
     </main>
@@ -1937,6 +2253,10 @@
 
                     <p class="menu-subtitle">
                         Sykemeldingskalkulator
+                    </p>
+
+                    <p class="menu-product-version">
+                        Versjon 1.0.0
                     </p>
                 </div>
 
@@ -2103,6 +2423,180 @@
                 Versjon 1.0.0
             </div>
         </section>
+    </div>
+
+    <div
+        id="aboutBackdrop"
+        class="about-backdrop"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="aboutTitle"
+        aria-hidden="true"
+    >
+        <article class="about-sheet">
+            <div
+                class="menu-handle"
+                aria-hidden="true"
+            ></div>
+
+            <div class="about-topbar">
+                <button
+                    id="aboutBackButton"
+                    class="about-back-button"
+                    type="button"
+                    aria-label="Tilbake til menyen"
+                >
+                    <span aria-hidden="true">
+                        ‹
+                    </span>
+
+                    Meny
+                </button>
+
+                <button
+                    id="closeAboutButton"
+                    class="about-close-button"
+                    type="button"
+                    aria-label="Lukk Om appen"
+                >
+                    ×
+                </button>
+            </div>
+
+            <header class="about-hero">
+                <img
+                    class="about-logo"
+                    src="OctaCore_Core_Symbol_Transparent.svg"
+                    alt="OctaCore"
+                >
+
+                <h2
+                    id="aboutTitle"
+                    class="about-brand"
+                >
+                    OCTACORE
+                </h2>
+
+                <p class="about-product">
+                    Sykemeldingskalkulator
+                </p>
+
+                <p class="about-version">
+                    Versjon 1.0.0
+                </p>
+
+                <div
+                    class="about-divider"
+                    aria-hidden="true"
+                ></div>
+            </header>
+
+            <div class="about-content">
+                <section class="about-card">
+                    <h3>
+                        Om appen
+                    </h3>
+
+                    <p>
+                        Sykemeldingskalkulatoren hjelper deg
+                        med å beregne arbeidstid ved gradert
+                        sykmelding.
+                    </p>
+
+                    <ul class="about-feature-list">
+                        <li>
+                            <span class="about-feature-icon">
+                                %
+                            </span>
+
+                            <span>
+                                Beregning ut fra stillingsprosent
+                                og sykmeldingsgrad.
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="about-feature-icon">
+                                t
+                            </span>
+
+                            <span>
+                                Arbeidstid per uke og et
+                                gjennomsnitt per arbeidsdag.
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="about-feature-icon">
+                                =
+                            </span>
+
+                            <span>
+                                Tydelig visning av arbeidsandel
+                                både av egen stilling og av full
+                                stilling.
+                            </span>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="about-card">
+                    <h3>
+                        Viktig informasjon
+                    </h3>
+
+                    <p>
+                        Kalkulatoren er utviklet som et
+                        hjelpemiddel. Resultatet er en
+                        matematisk beregning og erstatter
+                        ikke individuelle avtaler,
+                        tariffavtaler eller offentlige regler.
+                    </p>
+
+                    <p>
+                        Den faktiske fordelingen av
+                        arbeidstiden må avtales mellom
+                        arbeidsgiver og arbeidstaker. Ved
+                        spørsmål om sykmelding eller
+                        rettigheter bør du kontakte
+                        arbeidsgiver, NAV eller lege.
+                    </p>
+                </section>
+
+                <section class="about-card about-card-highlight">
+                    <h3>
+                        Om OctaCore
+                    </h3>
+
+                    <p>
+                        OctaCore utvikler digitale verktøy
+                        med fokus på enkelhet, kvalitet og
+                        brukervennlighet.
+                    </p>
+
+                    <p>
+                        Sykemeldingskalkulatoren er det
+                        første verktøyet i
+                        OctaCore-porteføljen.
+                    </p>
+
+                    <div class="about-founder">
+                        <strong>
+                            Utviklet av OctaCore
+                        </strong>
+
+                        <span>
+                            Grunnlegger: Thomas Nytveit
+                        </span>
+                    </div>
+                </section>
+
+                <p class="about-note">
+                    Beregningene i appen utføres lokalt i
+                    nettleseren.
+                </p>
+            </div>
+        </article>
     </div>
 
     <div
@@ -2335,6 +2829,21 @@
             aboutAppButton:
                 document.getElementById(
                     "aboutAppButton"
+                ),
+
+            aboutBackdrop:
+                document.getElementById(
+                    "aboutBackdrop"
+                ),
+
+            aboutBackButton:
+                document.getElementById(
+                    "aboutBackButton"
+                ),
+
+            closeAboutButton:
+                document.getElementById(
+                    "closeAboutButton"
                 ),
 
             privacyButton:
@@ -3239,7 +3748,10 @@
             elements.closeMenuButton.focus();
         }
 
-        function closeMenu() {
+        function closeMenu(
+            restoreFocus = true,
+            unlockPage = true
+        ) {
             elements.menuBackdrop
                 .classList
                 .remove("visible");
@@ -3249,6 +3761,59 @@
                     "aria-hidden",
                     "true"
                 );
+
+            if (unlockPage) {
+                document.body
+                    .classList
+                    .remove("modal-open");
+            }
+
+            if (restoreFocus) {
+                elements.moreButton.focus();
+            }
+        }
+
+        function openAbout() {
+            closeMenu(false, false);
+
+            elements.aboutBackdrop
+                .classList
+                .add("visible");
+
+            elements.aboutBackdrop
+                .setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
+
+            document.body
+                .classList
+                .add("modal-open");
+
+            elements.closeAboutButton.focus();
+        }
+
+        function closeAbout(
+            reopenMenu = false
+        ) {
+            elements.aboutBackdrop
+                .classList
+                .remove("visible");
+
+            elements.aboutBackdrop
+                .setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+            if (reopenMenu) {
+                window.setTimeout(
+                    openMenu,
+                    80
+                );
+
+                return;
+            }
 
             document.body
                 .classList
@@ -3704,10 +4269,35 @@
             .aboutAppButton
             .addEventListener(
                 "click",
-                () =>
-                    showComingSoon(
-                        "Om appen legges inn i neste steg"
-                    )
+                openAbout
+            );
+
+        elements
+            .aboutBackButton
+            .addEventListener(
+                "click",
+                () => closeAbout(true)
+            );
+
+        elements
+            .closeAboutButton
+            .addEventListener(
+                "click",
+                () => closeAbout(false)
+            );
+
+        elements
+            .aboutBackdrop
+            .addEventListener(
+                "click",
+                event => {
+                    if (
+                        event.target ===
+                        elements.aboutBackdrop
+                    ) {
+                        closeAbout(false);
+                    }
+                }
             );
 
         elements
@@ -3786,6 +4376,15 @@
             "keydown",
             event => {
                 if (event.key !== "Escape") {
+                    return;
+                }
+
+                if (
+                    elements.aboutBackdrop
+                        .classList
+                        .contains("visible")
+                ) {
+                    closeAbout(false);
                     return;
                 }
 
