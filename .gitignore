@@ -1,0 +1,3 @@
+git rm --cached .DS_Store
+git add .gitignore
+git commit -m "Ignore macOS system files".DS_Store
