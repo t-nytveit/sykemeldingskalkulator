@@ -1590,6 +1590,342 @@
             text-align: center;
         }
 
+
+        .contact-backdrop,
+        .updates-backdrop {
+            padding: 18px;
+
+            position: fixed;
+            inset: 0;
+            z-index: 1100;
+
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+
+            background: rgba(0, 0, 0, 0.76);
+
+            backdrop-filter: blur(11px);
+            -webkit-backdrop-filter: blur(11px);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition:
+                opacity 0.25s ease,
+                visibility 0.25s ease;
+        }
+
+        .contact-backdrop.visible,
+        .updates-backdrop.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .contact-sheet,
+        .updates-sheet {
+            width: 100%;
+            max-width: 430px;
+            max-height: min(88vh, 760px);
+            overflow-y: auto;
+            padding: 12px 18px 22px;
+
+            border: 1px solid var(--border);
+            border-radius: 26px 26px 20px 20px;
+
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(217, 170, 69, 0.10),
+                    transparent 31%
+                ),
+                radial-gradient(
+                    circle at 88% 18%,
+                    rgba(40, 224, 192, 0.07),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    150deg,
+                    rgba(27, 32, 37, 0.997),
+                    rgba(12, 16, 20, 0.997)
+                );
+
+            box-shadow:
+                0 34px 100px rgba(0, 0, 0, 0.72);
+
+            transform: translateY(38px);
+
+            transition: transform 0.25s ease;
+
+            scrollbar-width: thin;
+        }
+
+        .contact-backdrop.visible .contact-sheet,
+        .updates-backdrop.visible .updates-sheet {
+            transform: translateY(0);
+        }
+
+        .contact-hero,
+        .updates-hero {
+            padding: 8px 0 20px;
+
+            text-align: center;
+        }
+
+        .contact-icon,
+        .updates-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 12px;
+
+            display: grid;
+            place-items: center;
+
+            border: 1px solid rgba(217, 170, 69, 0.28);
+            border-radius: 22px;
+
+            color: var(--gold-light);
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(217, 170, 69, 0.10),
+                    rgba(40, 224, 192, 0.04)
+                );
+
+            font-size: 1.32rem;
+            font-weight: 850;
+        }
+
+        .contact-title,
+        .updates-title {
+            margin: 0;
+
+            color: var(--text);
+
+            font-size: 1.05rem;
+            font-weight: 840;
+        }
+
+        .contact-subtitle,
+        .updates-subtitle {
+            margin: 7px auto 0;
+            max-width: 325px;
+
+            color: var(--text-muted);
+
+            font-size: 0.72rem;
+            line-height: 1.55;
+        }
+
+        .contact-content,
+        .updates-content {
+            display: grid;
+            gap: 12px;
+        }
+
+        .contact-card,
+        .updates-card {
+            padding: 16px;
+
+            border: 1px solid var(--border-soft);
+            border-radius: 17px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255, 255, 255, 0.037),
+                    rgba(255, 255, 255, 0.016)
+                );
+        }
+
+        .contact-card h3,
+        .updates-card h3 {
+            margin: 0 0 7px;
+
+            color: var(--text);
+
+            font-size: 0.82rem;
+            font-weight: 820;
+        }
+
+        .contact-card p,
+        .updates-card p {
+            margin: 0;
+
+            color: var(--text-muted);
+
+            font-size: 0.71rem;
+            line-height: 1.58;
+        }
+
+        .contact-status {
+            margin-top: 12px;
+            padding: 10px 12px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+
+            border: 1px solid rgba(217, 170, 69, 0.20);
+            border-radius: 13px;
+
+            background: rgba(217, 170, 69, 0.045);
+        }
+
+        .contact-status-label {
+            color: var(--text);
+
+            font-size: 0.72rem;
+            font-weight: 760;
+        }
+
+        .contact-status-badge {
+            padding: 4px 8px;
+
+            border: 1px solid rgba(246, 215, 119, 0.22);
+            border-radius: 999px;
+
+            color: var(--gold-light);
+            background: rgba(217, 170, 69, 0.07);
+
+            font-size: 0.61rem;
+            font-weight: 760;
+            white-space: nowrap;
+        }
+
+        .contact-idea {
+            border-color: rgba(40, 224, 192, 0.22);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(40, 224, 192, 0.055),
+                    rgba(255, 255, 255, 0.016)
+                );
+        }
+
+        .contact-founder {
+            padding-top: 2px;
+
+            color: var(--text-dimmed);
+
+            font-size: 0.65rem;
+            line-height: 1.55;
+            text-align: center;
+        }
+
+        .contact-founder strong {
+            color: var(--gold-light);
+        }
+
+        .release-card {
+            position: relative;
+
+            overflow: hidden;
+        }
+
+        .release-card::before {
+            content: "";
+
+            width: 3px;
+
+            position: absolute;
+            inset: 0 auto 0 0;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    var(--gold),
+                    var(--teal)
+                );
+        }
+
+        .release-heading {
+            margin-bottom: 12px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .release-version {
+            color: var(--gold-light);
+
+            font-size: 0.76rem;
+            font-weight: 840;
+        }
+
+        .release-label {
+            margin-top: 3px;
+
+            color: var(--text-muted);
+
+            font-size: 0.67rem;
+        }
+
+        .release-badge {
+            padding: 4px 8px;
+
+            border: 1px solid rgba(40, 224, 192, 0.22);
+            border-radius: 999px;
+
+            color: var(--teal);
+            background: rgba(40, 224, 192, 0.055);
+
+            font-size: 0.60rem;
+            font-weight: 770;
+            white-space: nowrap;
+        }
+
+        .release-list {
+            margin: 0;
+            padding: 0;
+
+            display: grid;
+            gap: 8px;
+
+            list-style: none;
+        }
+
+        .release-list li {
+            display: grid;
+            grid-template-columns: 22px 1fr;
+            gap: 9px;
+            align-items: start;
+
+            color: var(--text-muted);
+
+            font-size: 0.70rem;
+            line-height: 1.45;
+        }
+
+        .release-check {
+            width: 22px;
+            height: 22px;
+
+            display: grid;
+            place-items: center;
+
+            border: 1px solid rgba(40, 224, 192, 0.20);
+            border-radius: 7px;
+
+            color: var(--teal);
+            background: rgba(40, 224, 192, 0.05);
+
+            font-size: 0.63rem;
+            font-weight: 850;
+        }
+
+        .updates-note {
+            color: var(--text-dimmed);
+
+            font-size: 0.64rem;
+            line-height: 1.5;
+            text-align: center;
+        }
+
         .menu-list {
             display: grid;
             gap: 10px;
@@ -2615,6 +2951,36 @@
                 </button>
 
                 <button
+                    id="updatesButton"
+                    class="menu-item"
+                    type="button"
+                >
+                    <span
+                        class="menu-item-icon"
+                        aria-hidden="true"
+                    >
+                        ★
+                    </span>
+
+                    <span class="menu-item-copy">
+                        <span class="menu-item-title">
+                            Hva er nytt
+                        </span>
+
+                        <span class="menu-item-description">
+                            Se nyheter og forbedringer.
+                        </span>
+                    </span>
+
+                    <span
+                        class="menu-item-arrow"
+                        aria-hidden="true"
+                    >
+                        ›
+                    </span>
+                </button>
+
+                <button
                     id="languageButton"
                     class="menu-item"
                     type="button"
@@ -3020,6 +3386,325 @@
     </div>
 
     <div
+        id="contactBackdrop"
+        class="contact-backdrop"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="contactTitle"
+        aria-hidden="true"
+    >
+        <article class="contact-sheet">
+            <div
+                class="menu-handle"
+                aria-hidden="true"
+            ></div>
+
+            <div class="about-topbar">
+                <button
+                    id="contactBackButton"
+                    class="about-back-button"
+                    type="button"
+                    aria-label="Tilbake til menyen"
+                >
+                    <span aria-hidden="true">
+                        ‹
+                    </span>
+
+                    Meny
+                </button>
+
+                <button
+                    id="closeContactButton"
+                    class="about-close-button"
+                    type="button"
+                    aria-label="Lukk kontakt"
+                >
+                    ×
+                </button>
+            </div>
+
+            <header class="contact-hero">
+                <div
+                    class="contact-icon"
+                    aria-hidden="true"
+                >
+                    ✉
+                </div>
+
+                <h2
+                    id="contactTitle"
+                    class="contact-title"
+                >
+                    Kontakt OctaCore
+                </h2>
+
+                <p class="contact-subtitle">
+                    Har du spørsmål, forslag eller ønsker
+                    om nye funksjoner? OctaCore setter pris
+                    på innspill fra brukerne.
+                </p>
+
+                <div
+                    class="about-divider"
+                    aria-hidden="true"
+                ></div>
+            </header>
+
+            <div class="contact-content">
+                <section class="contact-card">
+                    <h3>
+                        Nettside
+                    </h3>
+
+                    <p>
+                        En egen nettside for OctaCore og
+                        fremtidige digitale verktøy er under
+                        planlegging.
+                    </p>
+
+                    <div class="contact-status">
+                        <span class="contact-status-label">
+                            octacore.no
+                        </span>
+
+                        <span class="contact-status-badge">
+                            Kommer snart
+                        </span>
+                    </div>
+                </section>
+
+                <section class="contact-card">
+                    <h3>
+                        Kontaktkanal
+                    </h3>
+
+                    <p>
+                        En offentlig kontaktkanal legges til
+                        når den er klar. På den måten unngår
+                        vi å publisere midlertidig eller
+                        privat kontaktinformasjon.
+                    </p>
+
+                    <div class="contact-status">
+                        <span class="contact-status-label">
+                            Kontakt OctaCore
+                        </span>
+
+                        <span class="contact-status-badge">
+                            Kommer snart
+                        </span>
+                    </div>
+                </section>
+
+                <section class="contact-card contact-idea">
+                    <h3>
+                        Har du en idé?
+                    </h3>
+
+                    <p>
+                        OctaCore utvikler digitale verktøy
+                        med fokus på enkelhet, kvalitet og
+                        brukervennlighet. Gode forslag kan
+                        bli en del av en fremtidig versjon
+                        eller et nytt produkt.
+                    </p>
+                </section>
+
+                <p class="contact-founder">
+                    <strong>
+                        Utviklet av OctaCore
+                    </strong>
+                    <br>
+                    Grunnlegger: Thomas Nytveit
+                </p>
+            </div>
+        </article>
+    </div>
+
+    <div
+        id="updatesBackdrop"
+        class="updates-backdrop"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="updatesTitle"
+        aria-hidden="true"
+    >
+        <article class="updates-sheet">
+            <div
+                class="menu-handle"
+                aria-hidden="true"
+            ></div>
+
+            <div class="about-topbar">
+                <button
+                    id="updatesBackButton"
+                    class="about-back-button"
+                    type="button"
+                    aria-label="Tilbake til menyen"
+                >
+                    <span aria-hidden="true">
+                        ‹
+                    </span>
+
+                    Meny
+                </button>
+
+                <button
+                    id="closeUpdatesButton"
+                    class="about-close-button"
+                    type="button"
+                    aria-label="Lukk Hva er nytt"
+                >
+                    ×
+                </button>
+            </div>
+
+            <header class="updates-hero">
+                <div
+                    class="updates-icon"
+                    aria-hidden="true"
+                >
+                    ★
+                </div>
+
+                <h2
+                    id="updatesTitle"
+                    class="updates-title"
+                >
+                    Hva er nytt
+                </h2>
+
+                <p class="updates-subtitle">
+                    Her finner du nye funksjoner,
+                    forbedringer og viktige endringer i
+                    OctaCore Sykemeldingskalkulator.
+                </p>
+
+                <div
+                    class="about-divider"
+                    aria-hidden="true"
+                ></div>
+            </header>
+
+            <div class="updates-content">
+                <section class="updates-card release-card">
+                    <div class="release-heading">
+                        <div>
+                            <div class="release-version">
+                                Versjon 1.0.0
+                            </div>
+
+                            <div class="release-label">
+                                Første lansering
+                            </div>
+                        </div>
+
+                        <span class="release-badge">
+                            Gjeldende
+                        </span>
+                    </div>
+
+                    <ul class="release-list">
+                        <li>
+                            <span class="release-check">
+                                ✓
+                            </span>
+
+                            <span>
+                                Premium design og tydelig
+                                OctaCore-identitet.
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="release-check">
+                                ✓
+                            </span>
+
+                            <span>
+                                Beregning av arbeidstid ved
+                                gradert sykmelding.
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="release-check">
+                                ✓
+                            </span>
+
+                            <span>
+                                Arbeidsandel av egen stilling
+                                og tilsvarende andel av full
+                                stilling.
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="release-check">
+                                ✓
+                            </span>
+
+                            <span>
+                                Installering som app med
+                                PWA-støtte.
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="release-check">
+                                ✓
+                            </span>
+
+                            <span>
+                                Offline-støtte og varsling om
+                                nye versjoner.
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="release-check">
+                                ✓
+                            </span>
+
+                            <span>
+                                Deling av resultat og deling
+                                av selve appen.
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="release-check">
+                                ✓
+                            </span>
+
+                            <span>
+                                Premium meny med Om appen,
+                                Personvern og Kontakt.
+                            </span>
+                        </li>
+
+                        <li>
+                            <span class="release-check">
+                                ✓
+                            </span>
+
+                            <span>
+                                Lokal lagring av de siste
+                                valgene på brukerens enhet.
+                            </span>
+                        </li>
+                    </ul>
+                </section>
+
+                <p class="updates-note">
+                    Nye versjoner og forbedringer blir lagt
+                    til her etter hvert som appen utvikles.
+                </p>
+            </div>
+        </article>
+    </div>
+
+    <div
         id="installModal"
         class="modal-backdrop"
         role="dialog"
@@ -3289,6 +3974,41 @@
             contactButton:
                 document.getElementById(
                     "contactButton"
+                ),
+
+            contactBackdrop:
+                document.getElementById(
+                    "contactBackdrop"
+                ),
+
+            contactBackButton:
+                document.getElementById(
+                    "contactBackButton"
+                ),
+
+            closeContactButton:
+                document.getElementById(
+                    "closeContactButton"
+                ),
+
+            updatesButton:
+                document.getElementById(
+                    "updatesButton"
+                ),
+
+            updatesBackdrop:
+                document.getElementById(
+                    "updatesBackdrop"
+                ),
+
+            updatesBackButton:
+                document.getElementById(
+                    "updatesBackButton"
+                ),
+
+            closeUpdatesButton:
+                document.getElementById(
+                    "closeUpdatesButton"
                 ),
 
             languageButton:
@@ -4306,6 +5026,104 @@
             elements.moreButton.focus();
         }
 
+        function openContact() {
+            closeMenu(false, false);
+
+            elements.contactBackdrop
+                .classList
+                .add("visible");
+
+            elements.contactBackdrop
+                .setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
+
+            document.body
+                .classList
+                .add("modal-open");
+
+            elements.closeContactButton.focus();
+        }
+
+        function closeContact(
+            reopenMenu = false
+        ) {
+            elements.contactBackdrop
+                .classList
+                .remove("visible");
+
+            elements.contactBackdrop
+                .setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+            if (reopenMenu) {
+                window.setTimeout(
+                    openMenu,
+                    80
+                );
+
+                return;
+            }
+
+            document.body
+                .classList
+                .remove("modal-open");
+
+            elements.moreButton.focus();
+        }
+
+        function openUpdates() {
+            closeMenu(false, false);
+
+            elements.updatesBackdrop
+                .classList
+                .add("visible");
+
+            elements.updatesBackdrop
+                .setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
+
+            document.body
+                .classList
+                .add("modal-open");
+
+            elements.closeUpdatesButton.focus();
+        }
+
+        function closeUpdates(
+            reopenMenu = false
+        ) {
+            elements.updatesBackdrop
+                .classList
+                .remove("visible");
+
+            elements.updatesBackdrop
+                .setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+            if (reopenMenu) {
+                window.setTimeout(
+                    openMenu,
+                    80
+                );
+
+                return;
+            }
+
+            document.body
+                .classList
+                .remove("modal-open");
+
+            elements.moreButton.focus();
+        }
+
         async function shareApp() {
             const appUrl =
                 window.location.origin +
@@ -4823,10 +5641,70 @@
             .contactButton
             .addEventListener(
                 "click",
-                () =>
-                    showComingSoon(
-                        "Kontakt legges inn i neste steg"
-                    )
+                openContact
+            );
+
+        elements
+            .contactBackButton
+            .addEventListener(
+                "click",
+                () => closeContact(true)
+            );
+
+        elements
+            .closeContactButton
+            .addEventListener(
+                "click",
+                () => closeContact(false)
+            );
+
+        elements
+            .contactBackdrop
+            .addEventListener(
+                "click",
+                event => {
+                    if (
+                        event.target ===
+                        elements.contactBackdrop
+                    ) {
+                        closeContact(false);
+                    }
+                }
+            );
+
+        elements
+            .updatesButton
+            .addEventListener(
+                "click",
+                openUpdates
+            );
+
+        elements
+            .updatesBackButton
+            .addEventListener(
+                "click",
+                () => closeUpdates(true)
+            );
+
+        elements
+            .closeUpdatesButton
+            .addEventListener(
+                "click",
+                () => closeUpdates(false)
+            );
+
+        elements
+            .updatesBackdrop
+            .addEventListener(
+                "click",
+                event => {
+                    if (
+                        event.target ===
+                        elements.updatesBackdrop
+                    ) {
+                        closeUpdates(false);
+                    }
+                }
             );
 
         elements
@@ -4885,6 +5763,24 @@
             "keydown",
             event => {
                 if (event.key !== "Escape") {
+                    return;
+                }
+
+                if (
+                    elements.updatesBackdrop
+                        .classList
+                        .contains("visible")
+                ) {
+                    closeUpdates(false);
+                    return;
+                }
+
+                if (
+                    elements.contactBackdrop
+                        .classList
+                        .contains("visible")
+                ) {
+                    closeContact(false);
                     return;
                 }
 
