@@ -1,0 +1,43 @@
+name: Deploy to One.com
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Hent prosjektet
+        uses: actions/checkout@v4
+
+      - name: Installer verktøy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass rsync
+
+      - name: Registrer One.com-serveren
+        env:
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "$SFTP_HOST" >> ~/.ssh/known_hosts
+
+      - name: Publiser til One.com
+        env:
+          SSHPASS: ${{ secrets.SFTP_PASSWORD }}
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
+          SFTP_REMOTE_PATH: ${{ secrets.SFTP_REMOTE_PATH }}
+        run: |
+          sshpass -e rsync -avz --delete \
+            --exclude=".git/" \
+            --exclude=".github/" \
+            --exclude=".gitignore" \
+            --exclude="README.md" \
+            -e "ssh -p 22" \
+            ./ \
+            "$SFTP_USERNAME@$SFTP_HOST:$SFTP_REMOTE_PATH/"
