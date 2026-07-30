@@ -1367,6 +1367,229 @@
             text-align: center;
         }
 
+        .privacy-backdrop {
+            padding: 18px;
+
+            position: fixed;
+            inset: 0;
+            z-index: 1090;
+
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+
+            background: rgba(0, 0, 0, 0.76);
+
+            backdrop-filter: blur(11px);
+            -webkit-backdrop-filter: blur(11px);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition:
+                opacity 0.25s ease,
+                visibility 0.25s ease;
+        }
+
+        .privacy-backdrop.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .privacy-sheet {
+            width: 100%;
+            max-width: 430px;
+            max-height: min(88vh, 760px);
+            overflow-y: auto;
+            padding: 12px 18px 22px;
+
+            border: 1px solid var(--border);
+            border-radius: 26px 26px 20px 20px;
+
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(40, 224, 192, 0.10),
+                    transparent 31%
+                ),
+                radial-gradient(
+                    circle at 86% 18%,
+                    rgba(217, 170, 69, 0.07),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    150deg,
+                    rgba(27, 32, 37, 0.997),
+                    rgba(12, 16, 20, 0.997)
+                );
+
+            box-shadow:
+                0 34px 100px rgba(0, 0, 0, 0.72);
+
+            transform: translateY(38px);
+
+            transition: transform 0.25s ease;
+
+            scrollbar-width: thin;
+        }
+
+        .privacy-backdrop.visible .privacy-sheet {
+            transform: translateY(0);
+        }
+
+        .privacy-hero {
+            padding: 8px 0 20px;
+
+            text-align: center;
+        }
+
+        .privacy-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 12px;
+
+            display: grid;
+            place-items: center;
+
+            border: 1px solid rgba(40, 224, 192, 0.28);
+            border-radius: 22px;
+
+            color: var(--teal);
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(40, 224, 192, 0.10),
+                    rgba(217, 170, 69, 0.035)
+                );
+
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+            font-size: 1.35rem;
+            font-weight: 850;
+        }
+
+        .privacy-title {
+            margin: 0;
+
+            color: var(--text);
+
+            font-size: 1.05rem;
+            font-weight: 840;
+        }
+
+        .privacy-subtitle {
+            margin: 7px auto 0;
+            max-width: 310px;
+
+            color: var(--text-muted);
+
+            font-size: 0.72rem;
+            line-height: 1.5;
+        }
+
+        .privacy-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .privacy-item {
+            padding: 14px;
+
+            display: grid;
+            grid-template-columns: 34px 1fr;
+            gap: 11px;
+            align-items: start;
+
+            border: 1px solid var(--border-soft);
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255, 255, 255, 0.035),
+                    rgba(255, 255, 255, 0.015)
+                );
+        }
+
+        .privacy-item-icon {
+            width: 34px;
+            height: 34px;
+
+            display: grid;
+            place-items: center;
+
+            border: 1px solid rgba(40, 224, 192, 0.23);
+            border-radius: 11px;
+
+            color: var(--teal);
+            background: rgba(40, 224, 192, 0.055);
+
+            font-size: 0.78rem;
+            font-weight: 850;
+        }
+
+        .privacy-item h3 {
+            margin: 0 0 4px;
+
+            color: var(--text);
+
+            font-size: 0.78rem;
+            font-weight: 810;
+        }
+
+        .privacy-item p {
+            margin: 0;
+
+            color: var(--text-muted);
+
+            font-size: 0.70rem;
+            line-height: 1.52;
+        }
+
+        .privacy-warning {
+            margin-top: 12px;
+            padding: 15px;
+
+            border: 1px solid rgba(217, 170, 69, 0.24);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(217, 170, 69, 0.07),
+                    rgba(255, 255, 255, 0.018)
+                );
+        }
+
+        .privacy-warning h3 {
+            margin: 0 0 7px;
+
+            color: var(--gold-light);
+
+            font-size: 0.76rem;
+            font-weight: 820;
+        }
+
+        .privacy-warning p {
+            margin: 0;
+
+            color: var(--text-muted);
+
+            font-size: 0.69rem;
+            line-height: 1.55;
+        }
+
+        .privacy-footer-note {
+            margin: 14px 2px 0;
+
+            color: var(--text-dimmed);
+
+            font-size: 0.64rem;
+            line-height: 1.5;
+            text-align: center;
+        }
+
         .menu-list {
             display: grid;
             gap: 10px;
@@ -2600,6 +2823,203 @@
     </div>
 
     <div
+        id="privacyBackdrop"
+        class="privacy-backdrop"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="privacyTitle"
+        aria-hidden="true"
+    >
+        <article class="privacy-sheet">
+            <div
+                class="menu-handle"
+                aria-hidden="true"
+            ></div>
+
+            <div class="about-topbar">
+                <button
+                    id="privacyBackButton"
+                    class="about-back-button"
+                    type="button"
+                    aria-label="Tilbake til menyen"
+                >
+                    <span aria-hidden="true">
+                        ‹
+                    </span>
+
+                    Meny
+                </button>
+
+                <button
+                    id="closePrivacyButton"
+                    class="about-close-button"
+                    type="button"
+                    aria-label="Lukk personvern"
+                >
+                    ×
+                </button>
+            </div>
+
+            <header class="privacy-hero">
+                <div
+                    class="privacy-icon"
+                    aria-hidden="true"
+                >
+                    ◇
+                </div>
+
+                <h2
+                    id="privacyTitle"
+                    class="privacy-title"
+                >
+                    Personvern i korte trekk
+                </h2>
+
+                <p class="privacy-subtitle">
+                    Appen er laget for å kunne brukes uten
+                    konto, registrering eller innsending av
+                    personopplysninger.
+                </p>
+
+                <div
+                    class="about-divider"
+                    aria-hidden="true"
+                ></div>
+            </header>
+
+            <div class="privacy-list">
+                <section class="privacy-item">
+                    <span
+                        class="privacy-item-icon"
+                        aria-hidden="true"
+                    >
+                        ✓
+                    </span>
+
+                    <div>
+                        <h3>
+                            Ingen innlogging
+                        </h3>
+
+                        <p>
+                            Du trenger ikke å opprette konto
+                            eller registrere deg for å bruke
+                            kalkulatoren.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="privacy-item">
+                    <span
+                        class="privacy-item-icon"
+                        aria-hidden="true"
+                    >
+                        ✓
+                    </span>
+
+                    <div>
+                        <h3>
+                            Ingen personopplysninger kreves
+                        </h3>
+
+                        <p>
+                            Kalkulatoren ber ikke om navn,
+                            fødselsnummer, e-postadresse eller
+                            andre identifiserende opplysninger.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="privacy-item">
+                    <span
+                        class="privacy-item-icon"
+                        aria-hidden="true"
+                    >
+                        ✓
+                    </span>
+
+                    <div>
+                        <h3>
+                            Beregningene skjer lokalt
+                        </h3>
+
+                        <p>
+                            Tallene behandles direkte i
+                            nettleseren på enheten din. De
+                            sendes ikke til OctaCore for å
+                            utføre beregningen.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="privacy-item">
+                    <span
+                        class="privacy-item-icon"
+                        aria-hidden="true"
+                    >
+                        ✓
+                    </span>
+
+                    <div>
+                        <h3>
+                            Lokal lagring på enheten
+                        </h3>
+
+                        <p>
+                            Verdier kan lagres lokalt i
+                            nettleseren slik at appen husker
+                            de siste valgene dine. Denne
+                            informasjonen blir på enheten din
+                            og kan fjernes ved å nullstille
+                            appen eller slette nettleserdata.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="privacy-item">
+                    <span
+                        class="privacy-item-icon"
+                        aria-hidden="true"
+                    >
+                        ✓
+                    </span>
+
+                    <div>
+                        <h3>
+                            Ingen opplysninger sendes til OctaCore
+                        </h3>
+
+                        <p>
+                            Denne versjonen av appen har ingen
+                            innebygd innsending av
+                            kalkulatorverdier eller
+                            personopplysninger til OctaCore.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <section class="privacy-warning">
+                <h3>
+                    Ved fremtidige endringer
+                </h3>
+
+                <p>
+                    Personvernteksten må oppdateres dersom
+                    appen senere får analyseverktøy,
+                    skylagring, innlogging, kontaktskjema,
+                    betaling eller andre tjenester som
+                    behandler data.
+                </p>
+            </section>
+
+            <p class="privacy-footer-note">
+                Sist oppdatert: versjon 1.0.0
+            </p>
+        </article>
+    </div>
+
+    <div
         id="installModal"
         class="modal-backdrop"
         role="dialog"
@@ -2849,6 +3269,21 @@
             privacyButton:
                 document.getElementById(
                     "privacyButton"
+                ),
+
+            privacyBackdrop:
+                document.getElementById(
+                    "privacyBackdrop"
+                ),
+
+            privacyBackButton:
+                document.getElementById(
+                    "privacyBackButton"
+                ),
+
+            closePrivacyButton:
+                document.getElementById(
+                    "closePrivacyButton"
                 ),
 
             contactButton:
@@ -3822,6 +4257,55 @@
             elements.moreButton.focus();
         }
 
+        function openPrivacy() {
+            closeMenu(false, false);
+
+            elements.privacyBackdrop
+                .classList
+                .add("visible");
+
+            elements.privacyBackdrop
+                .setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
+
+            document.body
+                .classList
+                .add("modal-open");
+
+            elements.closePrivacyButton.focus();
+        }
+
+        function closePrivacy(
+            reopenMenu = false
+        ) {
+            elements.privacyBackdrop
+                .classList
+                .remove("visible");
+
+            elements.privacyBackdrop
+                .setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+            if (reopenMenu) {
+                window.setTimeout(
+                    openMenu,
+                    80
+                );
+
+                return;
+            }
+
+            document.body
+                .classList
+                .remove("modal-open");
+
+            elements.moreButton.focus();
+        }
+
         async function shareApp() {
             const appUrl =
                 window.location.origin +
@@ -4304,10 +4788,35 @@
             .privacyButton
             .addEventListener(
                 "click",
-                () =>
-                    showComingSoon(
-                        "Personvern legges inn i neste steg"
-                    )
+                openPrivacy
+            );
+
+        elements
+            .privacyBackButton
+            .addEventListener(
+                "click",
+                () => closePrivacy(true)
+            );
+
+        elements
+            .closePrivacyButton
+            .addEventListener(
+                "click",
+                () => closePrivacy(false)
+            );
+
+        elements
+            .privacyBackdrop
+            .addEventListener(
+                "click",
+                event => {
+                    if (
+                        event.target ===
+                        elements.privacyBackdrop
+                    ) {
+                        closePrivacy(false);
+                    }
+                }
             );
 
         elements
@@ -4376,6 +4885,15 @@
             "keydown",
             event => {
                 if (event.key !== "Escape") {
+                    return;
+                }
+
+                if (
+                    elements.privacyBackdrop
+                        .classList
+                        .contains("visible")
+                ) {
+                    closePrivacy(false);
                     return;
                 }
 
