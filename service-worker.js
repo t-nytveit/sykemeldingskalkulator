@@ -1,5 +1,5 @@
 const CACHE_NAME =
-    "octacore-sykemeldingskalkulator-v8";
+    "octacore-sykemeldingskalkulator-v9";
 
 const APP_ASSETS = [
     "./",
@@ -7,7 +7,8 @@ const APP_ASSETS = [
     "./manifest.json",
     "./css/styles.css",
     "./js/app.js",
-    "./assets/OctaCore_Core_Symbol_Transparent.svg",
+    "./assets/OctaCore_Sykemeldingskalkulator_Logo_Transparent.png",
+    "./assets/OctaCore_Sykemeldingskalkulator_Logo.png",
     "./assets/favicon.ico",
     "./assets/favicon-16.png",
     "./assets/favicon-32.png",

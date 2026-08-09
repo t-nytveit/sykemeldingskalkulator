@@ -6,7 +6,10 @@
     --gold: #d9aa45;
     --gold-light: #f6d777;
 
-    --teal: #28e0c0;
+    --blue: #0954c6;
+    --blue-light: #65bcf9;
+    --blue-depth: #043690;
+    --blue-shadow: #031b41;
 
     --text: #f4f5f6;
     --text-muted: #9ca7b1;
@@ -14,7 +17,7 @@
 
     --border: rgba(246, 215, 119, 0.20);
     --border-soft: rgba(255, 255, 255, 0.09);
-    --border-teal: rgba(40, 224, 192, 0.38);
+    --border-blue: rgba(9, 84, 198, 0.42);
 
     --danger: #ff7777;
 
@@ -58,7 +61,7 @@ body {
     background:
         radial-gradient(
             circle at 50% -10%,
-            rgba(40, 224, 192, 0.11),
+            rgba(9, 84, 198, 0.12),
             transparent 36%
         ),
         radial-gradient(
@@ -124,7 +127,7 @@ button {
         ),
         linear-gradient(
             315deg,
-            rgba(40, 224, 192, 0.025),
+            rgba(9, 84, 198, 0.025),
             transparent 40%
         );
 }
@@ -141,18 +144,18 @@ button {
     position: relative;
     z-index: 2;
 
-    border: 1px solid var(--border-teal);
+    border: 1px solid var(--border-blue);
     border-radius: 14px;
 
     background:
         linear-gradient(
             135deg,
-            rgba(40, 224, 192, 0.12),
-            rgba(40, 224, 192, 0.045)
+            rgba(9, 84, 198, 0.14),
+            rgba(9, 84, 198, 0.05)
         );
 
     box-shadow:
-        0 10px 30px rgba(40, 224, 192, 0.08);
+        0 10px 30px rgba(9, 84, 198, 0.09);
 }
 
 .update-banner.visible {
@@ -185,12 +188,12 @@ button {
 
     flex: 0 0 auto;
 
-    border: 1px solid rgba(40, 224, 192, 0.50);
+    border: 1px solid rgba(101, 188, 249, 0.55);
     border-radius: 999px;
 
     color: #06110f;
 
-    background: var(--teal);
+    background: var(--blue-light);
 
     font-size: 0.70rem;
     font-weight: 800;
@@ -203,7 +206,7 @@ button {
 }
 
 .app-header {
-    margin-bottom: 23px;
+    margin-bottom: 12px;
 
     position: relative;
     z-index: 1;
@@ -233,7 +236,7 @@ button {
             90deg,
             var(--gold-light),
             var(--gold) 50%,
-            var(--teal)
+            var(--blue-light)
         );
 
     -webkit-background-clip: text;
@@ -256,6 +259,7 @@ button {
 }
 
 .intro {
+    margin-top: 0;
     margin-bottom: 21px;
 
     position: relative;
@@ -298,14 +302,14 @@ button {
     display: grid;
     gap: 7px;
 
-    border: 1px solid var(--border-teal);
+    border: 1px solid var(--border-blue);
     border-radius: 14px;
 
     background:
         linear-gradient(
             135deg,
-            rgba(40, 224, 192, 0.08),
-            rgba(40, 224, 192, 0.035)
+            rgba(9, 84, 198, 0.09),
+            rgba(9, 84, 198, 0.04)
         );
 
     position: relative;
@@ -340,14 +344,14 @@ button {
 
     border-radius: 50%;
 
-    background: var(--teal);
+    background: var(--blue-light);
 
     box-shadow:
-        0 0 12px rgba(40, 224, 192, 0.9);
+        0 0 12px rgba(101, 188, 249, 0.85);
 }
 
 .percentage-value {
-    color: var(--teal);
+    color: var(--blue-light);
 
     font-weight: 820;
     text-align: right;
@@ -423,12 +427,12 @@ button {
 
 .field-wrapper input:focus,
 .field-wrapper select:focus {
-    border-color: var(--teal);
+    border-color: var(--blue-light);
 
-    background: rgba(40, 224, 192, 0.05);
+    background: rgba(9, 84, 198, 0.055);
 
     box-shadow:
-        0 0 0 4px rgba(40, 224, 192, 0.10);
+        0 0 0 4px rgba(9, 84, 198, 0.11);
 }
 
 .field-suffix,
@@ -509,31 +513,31 @@ button {
 }
 
 .share-button {
-    border: 1px solid var(--border-teal);
+    border: 1px solid var(--border-blue);
 
-    color: #07110f;
+    color: #04101d;
 
     background:
         linear-gradient(
             135deg,
-            var(--teal),
-            #20cbb0
+            var(--blue-light),
+            var(--blue)
         );
 
     box-shadow:
-        0 8px 24px rgba(40, 224, 192, 0.16);
+        0 8px 24px rgba(9, 84, 198, 0.24);
 }
 
 .share-button:hover {
     background:
         linear-gradient(
             135deg,
-            #4aecd0,
-            var(--teal)
+            #8fcfff,
+            var(--blue-light)
         );
 
     box-shadow:
-        0 10px 28px rgba(40, 224, 192, 0.22);
+        0 10px 28px rgba(9, 84, 198, 0.30);
 }
 
 .reset-button {
@@ -584,7 +588,7 @@ button {
         linear-gradient(
             135deg,
             rgba(217, 170, 69, 0.10),
-            rgba(40, 224, 192, 0.045)
+            rgba(9, 84, 198, 0.05)
         );
 
     font-size: 0.79rem;
@@ -605,7 +609,7 @@ button {
         linear-gradient(
             135deg,
             rgba(217, 170, 69, 0.15),
-            rgba(40, 224, 192, 0.07)
+            rgba(9, 84, 198, 0.075)
         );
 }
 
@@ -650,7 +654,7 @@ button {
         linear-gradient(
             145deg,
             rgba(217, 170, 69, 0.075),
-            rgba(40, 224, 192, 0.045)
+            rgba(9, 84, 198, 0.05)
         ),
         rgba(24, 29, 34, 0.96);
 
@@ -695,7 +699,7 @@ button {
 }
 
 .result-time {
-    color: var(--teal);
+    color: var(--blue-light);
 
     font-size: 0.96rem;
     font-weight: 780;
@@ -770,10 +774,10 @@ button {
 .formula-box {
     padding: 15px;
 
-    border: 1px solid rgba(40, 224, 192, 0.17);
+    border: 1px solid rgba(9, 84, 198, 0.19);
     border-radius: var(--radius-small);
 
-    background: rgba(40, 224, 192, 0.04);
+    background: rgba(9, 84, 198, 0.045);
 }
 
 .formula-row {
@@ -801,7 +805,7 @@ button {
 }
 
 .formula-row .formula-result {
-    color: var(--teal);
+    color: var(--blue-light);
 }
 
 .disclaimer {
@@ -906,7 +910,7 @@ button {
     background:
         radial-gradient(
             circle at 50% 0%,
-            rgba(40, 224, 192, 0.08),
+            rgba(9, 84, 198, 0.09),
             transparent 45%
         ),
         linear-gradient(
@@ -1042,7 +1046,7 @@ button {
         ),
         radial-gradient(
             circle at 86% 18%,
-            rgba(40, 224, 192, 0.07),
+            rgba(9, 84, 198, 0.075),
             transparent 32%
         ),
         linear-gradient(
@@ -1130,7 +1134,7 @@ button {
             90deg,
             var(--gold-light),
             var(--gold) 52%,
-            var(--teal)
+            var(--blue-light)
         );
 
     -webkit-background-clip: text;
@@ -1198,7 +1202,7 @@ button {
         linear-gradient(
             145deg,
             rgba(217, 170, 69, 0.065),
-            rgba(40, 224, 192, 0.025)
+            rgba(9, 84, 198, 0.025)
         );
 }
 
@@ -1253,11 +1257,11 @@ button {
     display: grid;
     place-items: center;
 
-    border: 1px solid rgba(40, 224, 192, 0.22);
+    border: 1px solid rgba(9, 84, 198, 0.24);
     border-radius: 8px;
 
-    color: var(--teal);
-    background: rgba(40, 224, 192, 0.055);
+    color: var(--blue-light);
+    background: rgba(9, 84, 198, 0.06);
 
     font-size: 0.67rem;
     font-weight: 850;
@@ -1340,7 +1344,7 @@ button {
     background:
         radial-gradient(
             circle at 50% 0%,
-            rgba(40, 224, 192, 0.10),
+            rgba(9, 84, 198, 0.11),
             transparent 31%
         ),
         radial-gradient(
@@ -1382,14 +1386,14 @@ button {
     display: grid;
     place-items: center;
 
-    border: 1px solid rgba(40, 224, 192, 0.28);
+    border: 1px solid rgba(9, 84, 198, 0.30);
     border-radius: 22px;
 
-    color: var(--teal);
+    color: var(--blue-light);
     background:
         linear-gradient(
             145deg,
-            rgba(40, 224, 192, 0.10),
+            rgba(9, 84, 198, 0.11),
             rgba(217, 170, 69, 0.035)
         );
 
@@ -1450,11 +1454,11 @@ button {
     display: grid;
     place-items: center;
 
-    border: 1px solid rgba(40, 224, 192, 0.23);
+    border: 1px solid rgba(9, 84, 198, 0.25);
     border-radius: 11px;
 
-    color: var(--teal);
-    background: rgba(40, 224, 192, 0.055);
+    color: var(--blue-light);
+    background: rgba(9, 84, 198, 0.06);
 
     font-size: 0.78rem;
     font-weight: 850;
@@ -1572,7 +1576,7 @@ button {
         ),
         radial-gradient(
             circle at 88% 18%,
-            rgba(40, 224, 192, 0.07),
+            rgba(9, 84, 198, 0.075),
             transparent 32%
         ),
         linear-gradient(
@@ -1620,7 +1624,7 @@ button {
         linear-gradient(
             145deg,
             rgba(217, 170, 69, 0.10),
-            rgba(40, 224, 192, 0.04)
+            rgba(9, 84, 198, 0.045)
         );
 
     font-size: 1.32rem;
@@ -1726,12 +1730,12 @@ button {
 }
 
 .contact-idea {
-    border-color: rgba(40, 224, 192, 0.22);
+    border-color: rgba(9, 84, 198, 0.24);
 
     background:
         linear-gradient(
             145deg,
-            rgba(40, 224, 192, 0.055),
+            rgba(9, 84, 198, 0.06),
             rgba(255, 255, 255, 0.016)
         );
 }
@@ -1768,7 +1772,7 @@ button {
         linear-gradient(
             180deg,
             var(--gold),
-            var(--teal)
+            var(--blue-light)
         );
 }
 
@@ -1799,11 +1803,11 @@ button {
 .release-badge {
     padding: 4px 8px;
 
-    border: 1px solid rgba(40, 224, 192, 0.22);
+    border: 1px solid rgba(9, 84, 198, 0.24);
     border-radius: 999px;
 
-    color: var(--teal);
-    background: rgba(40, 224, 192, 0.055);
+    color: var(--blue-light);
+    background: rgba(9, 84, 198, 0.06);
 
     font-size: 0.60rem;
     font-weight: 770;
@@ -1839,11 +1843,11 @@ button {
     display: grid;
     place-items: center;
 
-    border: 1px solid rgba(40, 224, 192, 0.20);
+    border: 1px solid rgba(9, 84, 198, 0.22);
     border-radius: 7px;
 
-    color: var(--teal);
-    background: rgba(40, 224, 192, 0.05);
+    color: var(--blue-light);
+    background: rgba(9, 84, 198, 0.055);
 
     font-size: 0.63rem;
     font-weight: 850;
@@ -1888,8 +1892,8 @@ button {
 }
 
 .menu-item:hover {
-    border-color: rgba(40, 224, 192, 0.30);
-    background: rgba(40, 224, 192, 0.045);
+    border-color: rgba(9, 84, 198, 0.32);
+    background: rgba(9, 84, 198, 0.05);
 }
 
 .menu-item:active {
@@ -1903,11 +1907,11 @@ button {
     display: grid;
     place-items: center;
 
-    border: 1px solid rgba(40, 224, 192, 0.24);
+    border: 1px solid rgba(9, 84, 198, 0.26);
     border-radius: 12px;
 
-    color: var(--teal);
-    background: rgba(40, 224, 192, 0.06);
+    color: var(--blue-light);
+    background: rgba(9, 84, 198, 0.065);
 
     font-size: 0.98rem;
 }
@@ -1990,16 +1994,16 @@ button {
 
     transform: translate(-50%, 24px);
 
-    border: 1px solid var(--border-teal);
+    border: 1px solid var(--border-blue);
     border-radius: 999px;
 
     color: var(--text);
 
-    background: rgba(13, 25, 23, 0.96);
+    background: rgba(7, 18, 36, 0.97);
 
     box-shadow:
         0 14px 40px rgba(0, 0, 0, 0.45),
-        0 0 24px rgba(40, 224, 192, 0.10);
+        0 0 24px rgba(9, 84, 198, 0.11);
 
     font-size: 0.8rem;
     font-weight: 720;
@@ -2154,12 +2158,12 @@ button {
     display: grid;
     place-items: center;
 
-    border: 1px solid var(--border-teal);
+    border: 1px solid var(--border-blue);
     border-radius: 50%;
 
-    color: var(--teal);
+    color: var(--blue-light);
 
-    background: rgba(40, 224, 192, 0.07);
+    background: rgba(9, 84, 198, 0.075);
 
     font-size: 0.75rem;
     font-weight: 850;
@@ -2179,7 +2183,7 @@ button {
 .share-symbol {
     display: inline-block;
 
-    color: var(--teal);
+    color: var(--blue-light);
 
     font-size: 1.05em;
     font-weight: 850;
@@ -2273,5 +2277,49 @@ button {
         animation: none !important;
         transition: none !important;
         scroll-behavior: auto !important;
+    }
+}
+
+.product-logo {
+    width: min(100%, 290px);
+    height: auto;
+    display: block;
+    margin: 0 auto 2px;
+    object-fit: contain;
+    filter:
+        drop-shadow(0 14px 34px rgba(0, 0, 0, 0.34))
+        drop-shadow(0 0 24px rgba(217, 170, 69, 0.08));
+}
+
+.about-product-logo {
+    width: min(100%, 250px);
+    height: auto;
+    display: block;
+    margin: 0 auto 14px;
+    object-fit: contain;
+    filter:
+        drop-shadow(0 12px 30px rgba(0, 0, 0, 0.32))
+        drop-shadow(0 0 22px rgba(9, 84, 198, 0.08));
+}
+
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+@media (max-width: 520px) {
+    .product-logo {
+        width: min(100%, 250px);
+    }
+
+    .about-product-logo {
+        width: min(100%, 220px);
     }
 }
