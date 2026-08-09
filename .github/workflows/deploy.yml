@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
   workflow_dispatch:
 
 jobs:
@@ -12,7 +13,7 @@ jobs:
 
     steps:
       - name: Hent prosjektet
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Installer verktøy
         run: |
@@ -25,6 +26,20 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H "$SFTP_HOST" >> ~/.ssh/known_hosts
+
+      - name: Kontroller målmappe
+        env:
+          SSHPASS: ${{ secrets.SFTP_PASSWORD }}
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
+          SFTP_REMOTE_PATH: ${{ secrets.SFTP_REMOTE_PATH }}
+        run: |
+          echo "Kontrollerer One.com-målmappe..."
+
+          sshpass -e ssh \
+            -p 22 \
+            "$SFTP_USERNAME@$SFTP_HOST" \
+            "pwd && echo '---' && ls -la && echo '--- target ---' && ls -la '$SFTP_REMOTE_PATH'"
 
       - name: Publiser til One.com
         env:
@@ -41,3 +56,20 @@ jobs:
             -e "ssh -p 22" \
             ./ \
             "$SFTP_USERNAME@$SFTP_HOST:$SFTP_REMOTE_PATH/"
+
+      - name: Verifiser deploy
+        env:
+          SSHPASS: ${{ secrets.SFTP_PASSWORD }}
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
+          SFTP_REMOTE_PATH: ${{ secrets.SFTP_REMOTE_PATH }}
+        run: |
+          echo "Verifiserer deploy..."
+
+          sshpass -e ssh \
+            -p 22 \
+            "$SFTP_USERNAME@$SFTP_HOST" \
+            "test -f '$SFTP_REMOTE_PATH/index.html' &&
+             test -f '$SFTP_REMOTE_PATH/assets/favicon-v2-32.png' &&
+             echo 'DEPLOY OK' &&
+             ls -lh '$SFTP_REMOTE_PATH/assets/favicon-v2-32.png'"
