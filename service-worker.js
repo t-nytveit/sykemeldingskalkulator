@@ -1,5 +1,5 @@
 const CACHE_NAME =
-    "octacore-sykemeldingskalkulator-v9";
+    "octacore-sykemeldingskalkulator-v10";
 
 const APP_ASSETS = [
     "./",
