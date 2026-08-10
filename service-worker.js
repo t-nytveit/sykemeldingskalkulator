@@ -1,5 +1,5 @@
 const CACHE_NAME =
-    "octacore-sykemeldingskalkulator-v11";
+    "octacore-sykemeldingskalkulator-v12";
 
 const APP_ASSETS = [
     "./",
@@ -7,15 +7,15 @@ const APP_ASSETS = [
     "./manifest.json",
     "./css/styles.css",
     "./js/app.js",
-    "./assets/OctaCore_Sykemeldingskalkulator_Logo_Transparent.png",
+    "./assets/OctaCore_Sykemeldingskalkulator_Logo_Absence_Red_Final.png",
     "./assets/OctaCore_Sykemeldingskalkulator_Logo.png",
-    "./assets/favicon-v2.ico",
-    "./assets/favicon-v2-16.png",
-    "./assets/favicon-v2-32.png",
-    "./assets/favicon-v2-48.png",
-    "./assets/apple-touch-icon-v2.png",
-    "./assets/icon-v2-192.png",
-    "./assets/icon-v2-512.png"
+    "./assets/favicon-red.ico",
+    "./assets/favicon-red-16.png",
+    "./assets/favicon-red-32.png",
+    "./assets/favicon-red-48.png",
+    "./assets/apple-touch-icon-red.png",
+    "./assets/icon-red-192.png",
+    "./assets/icon-red-512.png"
 ];
 
 self.addEventListener(
