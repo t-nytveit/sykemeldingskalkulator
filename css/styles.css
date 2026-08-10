@@ -6,10 +6,10 @@
     --gold: #d9aa45;
     --gold-light: #f6d777;
 
-    --blue: #0954c6;
-    --blue-light: #65bcf9;
-    --blue-depth: #043690;
-    --blue-shadow: #031b41;
+    --absence-red: #5b0e1a;
+    --absence-red-light: #7a1423;
+    --absence-red-depth: #40070f;
+    --absence-red-shadow: #200305;
 
     --text: #f4f5f6;
     --text-muted: #9ca7b1;
@@ -17,7 +17,7 @@
 
     --border: rgba(246, 215, 119, 0.20);
     --border-soft: rgba(255, 255, 255, 0.09);
-    --border-blue: rgba(9, 84, 198, 0.42);
+    --border-red: rgba(91, 14, 26, 0.42);
 
     --danger: #ff7777;
 
@@ -61,7 +61,7 @@ body {
     background:
         radial-gradient(
             circle at 50% -10%,
-            rgba(9, 84, 198, 0.12),
+            rgba(91, 14, 26, 0.12),
             transparent 36%
         ),
         radial-gradient(
@@ -127,7 +127,7 @@ button {
         ),
         linear-gradient(
             315deg,
-            rgba(9, 84, 198, 0.025),
+            rgba(91, 14, 26, 0.025),
             transparent 40%
         );
 }
@@ -144,18 +144,18 @@ button {
     position: relative;
     z-index: 2;
 
-    border: 1px solid var(--border-blue);
+    border: 1px solid var(--border-red);
     border-radius: 14px;
 
     background:
         linear-gradient(
             135deg,
-            rgba(9, 84, 198, 0.14),
-            rgba(9, 84, 198, 0.05)
+            rgba(91, 14, 26, 0.14),
+            rgba(91, 14, 26, 0.05)
         );
 
     box-shadow:
-        0 10px 30px rgba(9, 84, 198, 0.09);
+        0 10px 30px rgba(91, 14, 26, 0.09);
 }
 
 .update-banner.visible {
@@ -188,12 +188,12 @@ button {
 
     flex: 0 0 auto;
 
-    border: 1px solid rgba(101, 188, 249, 0.55);
+    border: 1px solid rgba(122, 20, 35, 0.55);
     border-radius: 999px;
 
     color: #06110f;
 
-    background: var(--blue-light);
+    background: var(--absence-red-light);
 
     font-size: 0.70rem;
     font-weight: 800;
@@ -261,14 +261,14 @@ button {
     display: grid;
     gap: 7px;
 
-    border: 1px solid var(--border-blue);
+    border: 1px solid var(--border-red);
     border-radius: 14px;
 
     background:
         linear-gradient(
             135deg,
-            rgba(9, 84, 198, 0.09),
-            rgba(9, 84, 198, 0.04)
+            rgba(91, 14, 26, 0.09),
+            rgba(91, 14, 26, 0.04)
         );
 
     position: relative;
@@ -303,14 +303,14 @@ button {
 
     border-radius: 50%;
 
-    background: var(--blue-light);
+    background: var(--absence-red-light);
 
     box-shadow:
-        0 0 12px rgba(101, 188, 249, 0.85);
+        0 0 12px rgba(122, 20, 35, 0.85);
 }
 
 .percentage-value {
-    color: var(--blue-light);
+    color: var(--absence-red-light);
 
     font-weight: 820;
     text-align: right;
@@ -386,12 +386,12 @@ button {
 
 .field-wrapper input:focus,
 .field-wrapper select:focus {
-    border-color: var(--blue-light);
+    border-color: var(--absence-red-light);
 
-    background: rgba(9, 84, 198, 0.055);
+    background: rgba(91, 14, 26, 0.055);
 
     box-shadow:
-        0 0 0 4px rgba(9, 84, 198, 0.11);
+        0 0 0 4px rgba(91, 14, 26, 0.11);
 }
 
 .field-suffix,
@@ -472,31 +472,35 @@ button {
 }
 
 .share-button {
-    border: 1px solid var(--border-blue);
+    border: 1px solid rgba(122, 20, 35, 0.72);
 
-    color: #04101d;
+    color: #f8eef0;
 
     background:
         linear-gradient(
             135deg,
-            var(--blue-light),
-            var(--blue)
+            #8b1729 0%,
+            var(--absence-red) 62%,
+            var(--absence-red-depth) 100%
         );
 
     box-shadow:
-        0 8px 24px rgba(9, 84, 198, 0.24);
+        0 8px 24px rgba(91, 14, 26, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .share-button:hover {
     background:
         linear-gradient(
             135deg,
-            #8fcfff,
-            var(--blue-light)
+            #9c1c31 0%,
+            #6b1020 62%,
+            var(--absence-red-depth) 100%
         );
 
     box-shadow:
-        0 10px 28px rgba(9, 84, 198, 0.30);
+        0 10px 30px rgba(91, 14, 26, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.10);
 }
 
 .reset-button {
@@ -547,7 +551,7 @@ button {
         linear-gradient(
             135deg,
             rgba(217, 170, 69, 0.10),
-            rgba(9, 84, 198, 0.05)
+            rgba(91, 14, 26, 0.05)
         );
 
     font-size: 0.79rem;
@@ -568,7 +572,7 @@ button {
         linear-gradient(
             135deg,
             rgba(217, 170, 69, 0.15),
-            rgba(9, 84, 198, 0.075)
+            rgba(91, 14, 26, 0.075)
         );
 }
 
@@ -613,7 +617,7 @@ button {
         linear-gradient(
             145deg,
             rgba(217, 170, 69, 0.075),
-            rgba(9, 84, 198, 0.05)
+            rgba(91, 14, 26, 0.05)
         ),
         rgba(24, 29, 34, 0.96);
 
@@ -658,7 +662,7 @@ button {
 }
 
 .result-time {
-    color: var(--blue-light);
+    color: #a6283d;
 
     font-size: 0.96rem;
     font-weight: 780;
@@ -733,10 +737,10 @@ button {
 .formula-box {
     padding: 15px;
 
-    border: 1px solid rgba(9, 84, 198, 0.19);
+    border: 1px solid rgba(91, 14, 26, 0.19);
     border-radius: var(--radius-small);
 
-    background: rgba(9, 84, 198, 0.045);
+    background: rgba(91, 14, 26, 0.045);
 }
 
 .formula-row {
@@ -764,7 +768,7 @@ button {
 }
 
 .formula-row .formula-result {
-    color: var(--blue-light);
+    color: var(--absence-red-light);
 }
 
 .disclaimer {
@@ -869,7 +873,7 @@ button {
     background:
         radial-gradient(
             circle at 50% 0%,
-            rgba(9, 84, 198, 0.09),
+            rgba(91, 14, 26, 0.09),
             transparent 45%
         ),
         linear-gradient(
@@ -1005,7 +1009,7 @@ button {
         ),
         radial-gradient(
             circle at 86% 18%,
-            rgba(9, 84, 198, 0.075),
+            rgba(91, 14, 26, 0.075),
             transparent 32%
         ),
         linear-gradient(
@@ -1093,7 +1097,7 @@ button {
             90deg,
             var(--gold-light),
             var(--gold) 52%,
-            var(--blue-light)
+            var(--absence-red-light)
         );
 
     -webkit-background-clip: text;
@@ -1161,7 +1165,7 @@ button {
         linear-gradient(
             145deg,
             rgba(217, 170, 69, 0.065),
-            rgba(9, 84, 198, 0.025)
+            rgba(91, 14, 26, 0.025)
         );
 }
 
@@ -1216,11 +1220,11 @@ button {
     display: grid;
     place-items: center;
 
-    border: 1px solid rgba(9, 84, 198, 0.24);
+    border: 1px solid rgba(91, 14, 26, 0.24);
     border-radius: 8px;
 
-    color: var(--blue-light);
-    background: rgba(9, 84, 198, 0.06);
+    color: var(--absence-red-light);
+    background: rgba(91, 14, 26, 0.06);
 
     font-size: 0.67rem;
     font-weight: 850;
@@ -1303,7 +1307,7 @@ button {
     background:
         radial-gradient(
             circle at 50% 0%,
-            rgba(9, 84, 198, 0.11),
+            rgba(91, 14, 26, 0.11),
             transparent 31%
         ),
         radial-gradient(
@@ -1345,14 +1349,14 @@ button {
     display: grid;
     place-items: center;
 
-    border: 1px solid rgba(9, 84, 198, 0.30);
+    border: 1px solid rgba(91, 14, 26, 0.30);
     border-radius: 22px;
 
-    color: var(--blue-light);
+    color: var(--absence-red-light);
     background:
         linear-gradient(
             145deg,
-            rgba(9, 84, 198, 0.11),
+            rgba(91, 14, 26, 0.11),
             rgba(217, 170, 69, 0.035)
         );
 
@@ -1413,11 +1417,11 @@ button {
     display: grid;
     place-items: center;
 
-    border: 1px solid rgba(9, 84, 198, 0.25);
+    border: 1px solid rgba(91, 14, 26, 0.25);
     border-radius: 11px;
 
-    color: var(--blue-light);
-    background: rgba(9, 84, 198, 0.06);
+    color: var(--absence-red-light);
+    background: rgba(91, 14, 26, 0.06);
 
     font-size: 0.78rem;
     font-weight: 850;
@@ -1535,7 +1539,7 @@ button {
         ),
         radial-gradient(
             circle at 88% 18%,
-            rgba(9, 84, 198, 0.075),
+            rgba(91, 14, 26, 0.075),
             transparent 32%
         ),
         linear-gradient(
@@ -1583,7 +1587,7 @@ button {
         linear-gradient(
             145deg,
             rgba(217, 170, 69, 0.10),
-            rgba(9, 84, 198, 0.045)
+            rgba(91, 14, 26, 0.045)
         );
 
     font-size: 1.32rem;
@@ -1689,12 +1693,12 @@ button {
 }
 
 .contact-idea {
-    border-color: rgba(9, 84, 198, 0.24);
+    border-color: rgba(91, 14, 26, 0.24);
 
     background:
         linear-gradient(
             145deg,
-            rgba(9, 84, 198, 0.06),
+            rgba(91, 14, 26, 0.06),
             rgba(255, 255, 255, 0.016)
         );
 }
@@ -1731,7 +1735,7 @@ button {
         linear-gradient(
             180deg,
             var(--gold),
-            var(--blue-light)
+            var(--absence-red-light)
         );
 }
 
@@ -1762,11 +1766,11 @@ button {
 .release-badge {
     padding: 4px 8px;
 
-    border: 1px solid rgba(9, 84, 198, 0.24);
+    border: 1px solid rgba(91, 14, 26, 0.24);
     border-radius: 999px;
 
-    color: var(--blue-light);
-    background: rgba(9, 84, 198, 0.06);
+    color: var(--absence-red-light);
+    background: rgba(91, 14, 26, 0.06);
 
     font-size: 0.60rem;
     font-weight: 770;
@@ -1802,11 +1806,11 @@ button {
     display: grid;
     place-items: center;
 
-    border: 1px solid rgba(9, 84, 198, 0.22);
+    border: 1px solid rgba(91, 14, 26, 0.22);
     border-radius: 7px;
 
-    color: var(--blue-light);
-    background: rgba(9, 84, 198, 0.055);
+    color: var(--absence-red-light);
+    background: rgba(91, 14, 26, 0.055);
 
     font-size: 0.63rem;
     font-weight: 850;
@@ -1851,8 +1855,8 @@ button {
 }
 
 .menu-item:hover {
-    border-color: rgba(9, 84, 198, 0.32);
-    background: rgba(9, 84, 198, 0.05);
+    border-color: rgba(91, 14, 26, 0.32);
+    background: rgba(91, 14, 26, 0.05);
 }
 
 .menu-item:active {
@@ -1866,11 +1870,11 @@ button {
     display: grid;
     place-items: center;
 
-    border: 1px solid rgba(9, 84, 198, 0.26);
+    border: 1px solid rgba(91, 14, 26, 0.26);
     border-radius: 12px;
 
-    color: var(--blue-light);
-    background: rgba(9, 84, 198, 0.065);
+    color: var(--absence-red-light);
+    background: rgba(91, 14, 26, 0.065);
 
     font-size: 0.98rem;
 }
@@ -1953,7 +1957,7 @@ button {
 
     transform: translate(-50%, 24px);
 
-    border: 1px solid var(--border-blue);
+    border: 1px solid var(--border-red);
     border-radius: 999px;
 
     color: var(--text);
@@ -1962,7 +1966,7 @@ button {
 
     box-shadow:
         0 14px 40px rgba(0, 0, 0, 0.45),
-        0 0 24px rgba(9, 84, 198, 0.11);
+        0 0 24px rgba(91, 14, 26, 0.11);
 
     font-size: 0.8rem;
     font-weight: 720;
@@ -2117,12 +2121,12 @@ button {
     display: grid;
     place-items: center;
 
-    border: 1px solid var(--border-blue);
+    border: 1px solid var(--border-red);
     border-radius: 50%;
 
-    color: var(--blue-light);
+    color: var(--absence-red-light);
 
-    background: rgba(9, 84, 198, 0.075);
+    background: rgba(91, 14, 26, 0.075);
 
     font-size: 0.75rem;
     font-weight: 850;
@@ -2142,7 +2146,7 @@ button {
 .share-symbol {
     display: inline-block;
 
-    color: var(--blue-light);
+    color: var(--absence-red-light);
 
     font-size: 1.05em;
     font-weight: 850;
@@ -2246,7 +2250,7 @@ button {
     object-fit: contain;
     filter:
         drop-shadow(0 12px 30px rgba(0, 0, 0, 0.32))
-        drop-shadow(0 0 22px rgba(9, 84, 198, 0.08));
+        drop-shadow(0 0 22px rgba(91, 14, 26, 0.08));
 }
 
 .visually-hidden {
